@@ -1,44 +1,51 @@
-class UserModel {
+class AddSalonModel {
   String? name;
   String? email;
+  String? password;
   String? phone;
   String? uId;
-  String? location;
-  String? status;
   String? image;
   String? state;
+  String? hair;
+  String? face;
+  String? body;
 
-  UserModel(
+  AddSalonModel(
       {this.uId,
       this.name,
       this.email,
+      this.password,
       this.phone,
-      this.location,
-      this.status,
       this.image,
-      this.state});
+      this.state,
+      this.hair,
+      this.face,
+      this.body});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  AddSalonModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     name = json['name'];
+    password = json['password'];
     phone = json['phone'];
     uId = json['uId'];
-    location = json['location'];
-    status = json['status'];
     image = json['image'];
-    state = json['state'];
+    hair = json['hair'];
+    face = json['face'];
+    body = json['body'];
   }
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'email': email,
+      'password': password,
       'phone': phone,
       'uId': uId,
-      'location': location,
-      'status': status,
       'image': image,
       'state': state,
+      'face': face,
+      'body': body,
+      'hair': hair,
     };
   }
 }

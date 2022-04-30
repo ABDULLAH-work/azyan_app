@@ -37,7 +37,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.azyan_app"
-        minSdkVersion 19
+        minSdkVersion 24
         multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -56,3 +56,6 @@ android {
 flutter {
     source '../..'
 }
+//dependencies {
+//    implementation 'com.android.support:multidex:2.0.0'
+//}

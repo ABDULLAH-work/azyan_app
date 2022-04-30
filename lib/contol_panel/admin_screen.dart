@@ -1,4 +1,5 @@
 import 'package:azyan/constance/component.dart';
+import 'package:azyan/contol_panel/add_salon/add_salon_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -27,7 +28,9 @@ class AdminScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
               color: Colors.white.withOpacity(0),
-              onPressed: () {},
+              onPressed: () {
+                PushToNextScreen(context, AddSalonScreen());
+              },
               text: 'Add Salon',
             ),
             const SizedBox(

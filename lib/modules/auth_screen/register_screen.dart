@@ -51,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(
+                child:const Icon(
                   Icons.arrow_back,
                   color: Colors.grey,
                 )),
@@ -93,7 +93,7 @@ class RegisterScreen extends StatelessWidget {
                                 backgroundColor: Colors.white,
                                 radius: 40.0,
                                 backgroundImage: profileImage == null
-                                    ? NetworkImage(
+                                    ? const NetworkImage(
                                         'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Person_icon_BLACK-01.svg/1200px-Person_icon_BLACK-01.svg.png',
                                       )
                                     : FileImage(profileImage) as ImageProvider,
@@ -104,7 +104,7 @@ class RegisterScreen extends StatelessWidget {
                               onPressed: () {
                                 cubit.getProfileImage();
                               },
-                              icon: CircleAvatar(
+                              icon: const CircleAvatar(
                                 child: Icon(
                                   Icons.camera_alt_outlined,
                                   size: 18.0,
@@ -205,11 +205,11 @@ class RegisterScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                             const Text(
                                 'Location',
                                 style: TextStyle(color: Colors.redAccent),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
@@ -220,9 +220,9 @@ class RegisterScreen extends StatelessWidget {
                                 height: 22,
                                 child: DropdownButton(
                                   icon:
-                                      Icon(Icons.keyboard_arrow_down_outlined),
+                                   const   Icon(Icons.keyboard_arrow_down_outlined),
                                   iconEnabledColor: HexColor('#ff5555'),
-                                  hint: Text('                          '),
+                                  hint: const Text('                          '),
                                   // Not necessary for Option 1
                                   value: cubit.selectedLocation,
                                   onChanged: (newValue) {
@@ -247,7 +247,7 @@ class RegisterScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                             const Text(
                                 'Status',
                                 style: TextStyle(color: Colors.redAccent),
                               ),
@@ -260,7 +260,7 @@ class RegisterScreen extends StatelessWidget {
                                 height: 22,
                                 child: DropdownButton(
                                   icon:
-                                      Icon(Icons.keyboard_arrow_down_outlined),
+                                   const  Icon(Icons.keyboard_arrow_down_outlined),
                                   iconEnabledColor: HexColor('#ff5555'),
                                   hint: Text('                         '),
                                   // Not necessary for Option 1
@@ -331,7 +331,7 @@ class RegisterScreen extends StatelessWidget {
                             onPressed: () {
                               PushToNextScreen(context, LoginScreen());
                             },
-                            child: Text(
+                            child: const Text(
                               'Login',
                               style: TextStyle(color: Colors.redAccent),
                             ),
