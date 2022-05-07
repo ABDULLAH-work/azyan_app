@@ -1,4 +1,5 @@
 import 'package:azyan/constance/component.dart';
+import 'package:azyan/contol_panel/management_salon_screen.dart';
 import 'package:azyan/shared/add_salon_cubit/cubit.dart';
 import 'package:azyan/shared/add_salon_cubit/states.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +7,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AddSalonServices extends StatelessWidget {
-   String name;
-   String email;
-   String password;
-   String phone;
+  String name;
+  String email;
+  String password;
+  String phone;
 
-
-   AddSalonServices({required this.name,required this.email,required this.password,required this.phone}) ;
+  AddSalonServices(
+      {required this.name,
+      required this.email,
+      required this.password,
+      required this.phone});
 
   Widget build(BuildContext context) {
+    bool checkedHair = false;
+    bool checkedFace = false;
+    bool checkedBody = false;
     return BlocConsumer<AddSalonCubit, AddSalonStates>(
       listener: (context, state) {
         if (state is AddSalonUploadImageSuccessState) {
@@ -23,11 +30,18 @@ class AddSalonServices extends StatelessWidget {
             email: email,
             password: password,
             phone: phone,
-            image:  AddSalonCubit.get(context).salonImageUrl,
+            image: AddSalonCubit.get(context).salonImageUrl,
             state: 'salon',
-            hair:  AddSalonCubit.get(context).isCheckedHair!.length>0 ?'true':'false',
-            face: AddSalonCubit.get(context).isCheckedFace!.length>0 ?'true':'false',
-            body: AddSalonCubit.get(context).isCheckedBody!.length>0 ?'true':'false',
+            hair: checkedHair ? 'true' : 'false',
+            face: checkedFace ? 'true' : 'false',
+            body: checkedBody ? 'true' : 'false',
+          );
+
+        }
+        if (state is RegisterCreateSalonSuccessState) {
+          NavegatandFinish(
+            context,
+            ManagementSalonScreen(),
           );
         }
       },
@@ -76,6 +90,7 @@ class AddSalonServices extends StatelessWidget {
                           onChanged: (value) {
                             AddSalonCubit.get(context)
                                 .checkboxResultHairFunction(value, index);
+                            checkedHair = true;
                           },
                         );
                       },
@@ -105,6 +120,7 @@ class AddSalonServices extends StatelessWidget {
                           onChanged: (value) {
                             AddSalonCubit.get(context)
                                 .checkboxResultFaceFunction(value, index);
+                            checkedFace = true;
                           },
                         );
                       },
@@ -134,6 +150,7 @@ class AddSalonServices extends StatelessWidget {
                           onChanged: (value) {
                             AddSalonCubit.get(context)
                                 .checkboxResultBodyFunction(value, index);
+                            checkedBody = true;
                           },
                         );
                       },
@@ -157,7 +174,9 @@ class AddSalonServices extends StatelessWidget {
                         ),
                         const SizedBox(
                           width: 10.0,
-                        ),
+                        ),if(state is SalonRegisterLoadingState)
+                          Center(child: CircularProgressIndicator())
+                        else
                         bottom(
                           borderColor: Colors.red,
                           width: MediaQuery.of(context).size.width / 3,

@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           create: (context) => RegisterCubit(),
         ),
         BlocProvider(
-          create: (context) => AppCubit()..getUserData(),
+          create: (context) => AppCubit()..getUserData()..getSalonData(),
         ),
         BlocProvider(
           create: (context) => AddSalonCubit()..initState(),

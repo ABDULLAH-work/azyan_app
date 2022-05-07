@@ -1,5 +1,6 @@
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/constance/constants.dart';
+import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
 import 'package:azyan/modules/auth_screen/login_screen.dart';
 import 'package:azyan/modules/home.dart';
@@ -60,4 +61,25 @@ class AppCubit extends Cubit<AppState> {
     NavegatandFinish(context, LoginScreen());
     emit(AppCubitLogOutState());
   }
+
+
+   AddSalonModel salonModel = AddSalonModel();
+
+  void getSalonData() {
+    emit(AppCubitGetSalonLoadingState());
+    FirebaseFirestore.instance.collection('users')
+        .where('state',isEqualTo: 'salon').get().then((value) {
+      var fromSnapShot = value.docs.map((e) => e.data().cast());
+      salonModel = AddSalonModel.fromJson(value.docs.asMap().cast());
+      print(value.docs.map((e) =>  e.data()));
+      emit(AppCubitGetSalonSuccessState());
+    }).catchError(
+          (error) {
+        print(error.toString());
+        emit(AppCubitGetSalonErrorState());
+      },
+    );
+  }
+
+
 }

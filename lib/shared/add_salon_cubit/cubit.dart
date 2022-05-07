@@ -166,9 +166,6 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     });
   }
 
-
-
-
   void salonRegister({
     required String name,
     required String email,
@@ -239,12 +236,69 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
         .set(model.toMap())
         .then(
       (value) {
+        addSalonServicesHair(hair: checkboxResultHair, uId: uId);
+        addSalonServicesFace(face: checkboxResultHair, uId: uId);
+        addSalonServicesBody(body: checkboxResultHair, uId: uId);
         emit(RegisterCreateSalonSuccessState(uId));
       },
     ).catchError(
       (error) {
         emit(RegisterCreateSalonErrorState());
       },
+    );
+  }
+
+  void addSalonServicesHair({
+    required Map<String, dynamic> hair,
+    required String uId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('hair')
+        .add(hair)
+        .then(
+      (value) {
+        print(value.id);
+      },
+    ).catchError(
+      (error) {},
+    );
+  }
+
+  void addSalonServicesFace({
+    required Map<String, dynamic> face,
+    required String uId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('Face')
+        .add(face)
+        .then(
+      (value) {
+        print(value.id);
+      },
+    ).catchError(
+      (error) {},
+    );
+  }
+
+  void addSalonServicesBody({
+    required Map<String, dynamic> body,
+    required String uId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('Body')
+        .add(body)
+        .then(
+      (value) {
+        print(value.id);
+      },
+    ).catchError(
+      (error) {},
     );
   }
 }

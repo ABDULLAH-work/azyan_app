@@ -15,3 +15,9 @@ class AppCubitGetUserErrorState extends AppState {
 class AppCubitChangeBottomNavigationState extends AppState {}
 
 class AppCubitLogOutState extends AppState {}
+
+class AppCubitGetSalonLoadingState extends AppState {}
+
+class AppCubitGetSalonSuccessState extends AppState {}
+
+class AppCubitGetSalonErrorState extends AppState {}
