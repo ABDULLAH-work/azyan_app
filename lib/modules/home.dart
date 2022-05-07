@@ -1,3 +1,4 @@
+import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
 import 'package:azyan/shared/cubit_app/states.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,8 @@ class Home extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = AppCubit.get(context).model;
-        return cubit.email != null
+        var cubit = AppCubit.get(context);
+        return cubit.model.email != null
             ? Scaffold(
                 backgroundColor: Colors.white,
                 body: SingleChildScrollView(
@@ -22,7 +23,7 @@ class Home extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hello  ${cubit.name} ...',
+                          'Hello  ${cubit.model.name} ...',
                           style: const TextStyle(
                               color: Colors.red,
                               fontSize: 20.0,
@@ -67,7 +68,7 @@ class Home extends StatelessWidget {
                                       color: Colors.red,
                                     ),
                                     //color: Colors.red,
-                                    child:const Icon(
+                                    child: const Icon(
                                       Icons.search,
                                       size: 40.0,
                                       color: Colors.white,
@@ -109,7 +110,20 @@ class Home extends StatelessWidget {
                             const SizedBox(
                               height: 20.0,
                             ),
-                            buildSalon(),
+                            // buildSalon(
+                            //     cubit.salonModel),
+                            SizedBox(
+
+                              height:180.0,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: cubit.salon.length,
+                                  itemBuilder: (context, index) => buildSalon(cubit.salon[index]),
+                                  separatorBuilder: (context, index) => SizedBox(
+                                        width: 10.0,
+                                      )),
+                            ),
                           ],
                         ),
                       ],
@@ -130,7 +144,6 @@ class Home extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Row(
-
             crossAxisAlignment: CrossAxisAlignment.start,
             //mainAxisSize: MainAxisSize.max,
             children: [
@@ -171,102 +184,85 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildSalon() {
-    return SizedBox(
-      //width: double.infinity,
-      height: 180.0,
-      child: ListView.separated(
-        shrinkWrap: true,
-
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: ()
-            {
-
-            },
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: Colors.blue[100],
-                      ),
-                      width: 100.0,
-                      height: 175.0,
-                    ),
-                  ],
+  Widget buildSalon(
+    AddSalonModel model,
+  ) {
+    return  InkWell(
+      onTap: () {},
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.blue[100],
                 ),
-                Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                        width: 84.0,
-                        height: 90.0,
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://media.istockphoto.com/photos/retro-styled-beauty-salon-picture-id1325440885?b=1&k=20&m=1325440885&s=170667a&w=0&h=JeC0ZLjDksr5rYOjnMevc0ZutvkNH_XmNJ9ZniyVKIY='),
-                      ),
-                    ),
-                    Text(
-                      'Dr.Lizza',
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w600),
-                    ),
-                     Text(
-                      'Makeup artist',
-                      style: TextStyle(color: Colors.white, fontSize: 11.0),
-                    ),
-                    Row(
-                      children: const [
-                        Icon(
-                          Icons.star,
-                          size: 10,
-                          color: Colors.amber,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 10,
-                          color: Colors.amber,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 10,
-                          color: Colors.amber,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 10,
-                          color: Colors.amber,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          '4.5',
-                          style: TextStyle(fontSize: 10.0, color: Colors.white),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(width: 10);
-        },
-        itemCount: 10,
-        scrollDirection: Axis.horizontal,
+                width: 100.0,
+                height: 175.0,
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Image(
+                  width: 84.0,
+                  height: 90.0,
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    '${model.image}',
+                  ),
+                ),
+              ),
+              Text(
+                '${model.name}',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                'Makeup artist',
+                style: TextStyle(color: Colors.white, fontSize: 11.0),
+              ),
+              Row(
+                children: const [
+                  Icon(
+                    Icons.star,
+                    size: 10,
+                    color: Colors.amber,
+                  ),
+                  Icon(
+                    Icons.star,
+                    size: 10,
+                    color: Colors.amber,
+                  ),
+                  Icon(
+                    Icons.star,
+                    size: 10,
+                    color: Colors.amber,
+                  ),
+                  Icon(
+                    Icons.star,
+                    size: 10,
+                    color: Colors.amber,
+                  ),
+                  Icon(
+                    Icons.star,
+                    size: 10,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    '4.5',
+                    style: TextStyle(fontSize: 10.0, color: Colors.white),
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
       ),
     );
   }

@@ -63,15 +63,16 @@ class AppCubit extends Cubit<AppState> {
   }
 
 
-   AddSalonModel salonModel = AddSalonModel();
+
+  List<AddSalonModel> salon=[];
 
   void getSalonData() {
     emit(AppCubitGetSalonLoadingState());
     FirebaseFirestore.instance.collection('users')
         .where('state',isEqualTo: 'salon').get().then((value) {
-      var fromSnapShot = value.docs.map((e) => e.data().cast());
-      salonModel = AddSalonModel.fromJson(value.docs.asMap().cast());
-      print(value.docs.map((e) =>  e.data()));
+       value.docs.forEach((element) {
+        salon.add(AddSalonModel.fromJson(element.data()));
+      });
       emit(AppCubitGetSalonSuccessState());
     }).catchError(
           (error) {
