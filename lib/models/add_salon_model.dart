@@ -9,18 +9,33 @@ class AddSalonModel {
   String? hair;
   String? face;
   String? body;
+  String? description;
+  String? location;
+  String? stateWork;
+  int? openOrClose;
+  int? hoursStart;
+  int? hoursEnd;
+  double? ratting;
 
-  AddSalonModel(
-      {this.uId,
-      this.name,
-      this.email,
-      this.password,
-      this.phone,
-      this.image,
-      this.state,
-      this.hair,
-      this.face,
-      this.body});
+  AddSalonModel({
+    this.uId,
+    this.name,
+    this.email,
+    this.password,
+    this.phone,
+    this.image,
+    this.state,
+    this.hair,
+    this.face,
+    this.body,
+    this.description,
+    this.ratting,
+    this.location,
+    this.openOrClose,
+    this.stateWork,
+    this.hoursEnd,
+    this.hoursStart,
+  });
 
   AddSalonModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -32,6 +47,13 @@ class AddSalonModel {
     hair = json['hair'];
     face = json['face'];
     body = json['body'];
+    description = json['description'];
+    ratting = json['ratting'];
+    location = json['location'];
+    openOrClose = json['openOrClose'];
+    hoursEnd = json['hoursEnd'];
+    hoursStart = json['hoursStart'];
+    stateWork = json['stateWork'];
   }
 
   Map<String, dynamic> toMap() {
@@ -46,6 +68,13 @@ class AddSalonModel {
       'face': face,
       'body': body,
       'hair': hair,
+      'stateWork': stateWork,
+      'description': description,
+      'ratting': ratting,
+      'location': location,
+      'openOrClose': openOrClose,
+      'hoursStart': hoursStart,
+      'hoursEnd': hoursEnd,
     };
   }
 }

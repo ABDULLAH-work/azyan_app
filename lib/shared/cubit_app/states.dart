@@ -1,10 +1,16 @@
+import 'package:azyan/models/user_model.dart';
+
 abstract class AppState {}
 
 class AppCubitInitialState extends AppState {}
 
 class AppCubitGetUserLoadingState extends AppState {}
 
-class AppCubitGetUserSuccessState extends AppState {}
+class AppCubitGetUserSuccessState extends AppState {
+  final UserModel model;
+
+  AppCubitGetUserSuccessState(this.model);
+}
 
 class AppCubitGetUserErrorState extends AppState {
   final String error;

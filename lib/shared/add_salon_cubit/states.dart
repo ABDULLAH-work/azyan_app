@@ -12,6 +12,12 @@ class AddSalonUploadImageErrorState extends AddSalonStates {}
 
 class AddSalonShowPasswordStates extends AddSalonStates {}
 
+class ChangeDropDownLocationState extends AddSalonStates {}
+
+class ChangeDropDownTimeStartState extends AddSalonStates {}
+
+class ChangeDropDownTimeEndState extends AddSalonStates {}
+
 class AddSalonFillCheckboxServicesHairStates extends AddSalonStates {}
 
 class AddSalonFillCheckboxServicesFaceStates extends AddSalonStates {}

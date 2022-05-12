@@ -1,10 +1,9 @@
 import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/constants.dart';
-import 'package:azyan/contol_panel/add_salon/add_salon_screen.dart';
-import 'package:azyan/modules/auth_screen/login_screen.dart';
 import 'package:azyan/modules/on_bording_screen.dart';
-import 'package:azyan/modules/salon_services_user.dart';
+import 'package:azyan/modules/salon_or_services_or_user_screen.dart';
 import 'package:azyan/shared/add_salon_cubit/cubit.dart';
+import 'package:azyan/shared/cotrol_panel_cubit/cubit.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
 import 'package:azyan/shared/login_cubit/cubit.dart';
 import 'package:azyan/shared/simple_bloc.dart';
@@ -28,7 +27,7 @@ Future<void> main() async {
   print(uId);
   if (onBoardingFinish != null) {
     if (uId == null) {
-      start = SalonServicesUser();
+      start = SalonOrServicesOrUser();
     } else
       start = AzyanLayout();
   } else {
@@ -59,10 +58,13 @@ class MyApp extends StatelessWidget {
           create: (context) => RegisterCubit(),
         ),
         BlocProvider(
-          create: (context) => AppCubit()..getUserData()..getSalonData(),
+          create: (context) => AppCubit()..getUserData(context)..getSalonData(),
         ),
         BlocProvider(
           create: (context) => AddSalonCubit()..initState(),
+        ),
+        BlocProvider(
+          create: (context) => ControlPanelCubit()..getSalonData(),
         ),
       ],
       child: MaterialApp(

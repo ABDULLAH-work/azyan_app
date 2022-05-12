@@ -1,10 +1,11 @@
 import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/constance/constants.dart';
-import 'package:azyan/contol_panel/admin_screen.dart';
+import 'package:azyan/contol_panel/control_panel_screen.dart';
 import 'package:azyan/modules/auth_screen/register_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
+import 'package:azyan/shared/cubit_app/states.dart';
 import 'package:azyan/shared/login_cubit/cubit.dart';
 import 'package:azyan/shared/login_cubit/states.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -29,8 +30,8 @@ class LoginScreen extends StatelessWidget {
           cachHelper.Savedataa(key: 'uId', value: state.Uid).then((value) {
             uId = cachHelper.getData('uId');
             print(uId);
-            AppCubit.get(context).getUserData();
-            NavegatandFinish(context, AzyanLayout());
+            AppCubit.get(context).getUserData(context);
+
           });
         }
       },

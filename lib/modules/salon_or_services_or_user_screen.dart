@@ -1,25 +1,21 @@
+import 'dart:ui';
+
 import 'package:azyan/constance/component.dart';
-import 'package:azyan/contol_panel/add_salon/add_salon_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+import 'auth_screen/login_screen.dart';
+
+class SalonOrServicesOrUser extends StatelessWidget {
+  const SalonOrServicesOrUser({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        title: Text(
-          'Control Panel',
-          style: ThemeData().textTheme.bodyText2,
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(40.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             bottom(
@@ -29,11 +25,11 @@ class AdminScreen extends StatelessWidget {
               height: 50,
               color: Colors.white.withOpacity(0),
               onPressed: () {
-                PushToNextScreen(context, AddSalonScreen());
+                PushToNextScreen(context, LoginScreen());
               },
-              text: 'Add Salon',
+              text: 'Login',
             ),
-            const SizedBox(
+            SizedBox(
               height: 20.0,
             ),
             bottom(
@@ -42,10 +38,12 @@ class AdminScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
               color: Colors.white.withOpacity(0),
-              onPressed: () {},
-              text: 'Management Salon',
+              onPressed: () {
+                //PushToNextScreen(context, RegisterScreen());
+              },
+              text: 'Create New Service',
             ),
-            const SizedBox(
+            SizedBox(
               height: 20.0,
             ),
             bottom(
@@ -54,27 +52,32 @@ class AdminScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
               color: Colors.white.withOpacity(0),
-              onPressed: () {},
-              text: 'Management Users',
+              onPressed: () {
+                //sPushToNextScreen(context, RegisterScreen());
+              },
+              text: 'Login to Salon',
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            bottom(
-              borderColor: Colors.grey,
-              Colortext: HexColor('#ff5555'),
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              color: Colors.white.withOpacity(0),
-              onPressed: () {},
-              text: 'Management Services',
-            ),
-            const SizedBox(
-              height: 20.0,
+            SizedBox(
+              height: 80.0,
             ),
           ],
         ),
       ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'AZYAN',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 35.0, fontWeight: FontWeight.w400,),
+            ),
+          ),
+        ],
+      ),
+      
     );
   }
 }

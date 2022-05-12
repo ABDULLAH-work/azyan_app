@@ -26,6 +26,37 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     emit(AddSalonShowPasswordStates());
   }
 
+
+  List<String> locations = [
+    'Ajman',
+    'sharjh',
+    'dubai',
+  ];
+  String? selectedLocation; // Option 2
+
+  List<int> timeStart = [
+    8,9,10,11,12,13
+  ];
+  int? selectedTimeStart; // Option 2
+
+  List<int> timeEnd = [
+    8,9,10,11,12,13
+  ];
+  int? selectedTimeEnd; // Option 2
+
+  void changDropDownLocation() {
+
+      emit(ChangeDropDownLocationState());
+
+  }
+  void changDropDownTimeStart() {
+      emit(ChangeDropDownTimeStartState());
+
+  }  void changDropDownTimeEnd() {
+      emit(ChangeDropDownTimeEndState());
+
+  }
+
   List<String> servicesHair = [
     "services 1",
     "services 2",
@@ -175,7 +206,14 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required String state,
     required String hair,
     required String face,
-    required String body,
+    required String body,   
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
   }) {
     emit(SalonRegisterLoadingState());
     FirebaseAuth.instance
@@ -196,6 +234,14 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
           hair: hair,
           face: face,
           body: body,
+          description: description,
+          location: location,
+          stateWork:  stateWork,
+          hoursEnd: hoursEnd,
+          hoursStart: hoursStart,
+          openOrClose: openOrClose,
+          ratting:  ratting,
+          
         );
       },
     ).catchError(
@@ -217,6 +263,13 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required String hair,
     required String face,
     required String body,
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
   }) {
     AddSalonModel model = AddSalonModel(
       name: name,
@@ -229,6 +282,13 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
       body: body,
       face: face,
       hair: hair,
+      description: description,
+      location: location,
+      stateWork:  stateWork,
+      hoursEnd: hoursEnd,
+      hoursStart: hoursStart,
+      openOrClose: openOrClose,
+      ratting:  ratting,
     );
     FirebaseFirestore.instance
         .collection('users')
@@ -237,8 +297,8 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
         .then(
       (value) {
         addSalonServicesHair(hair: checkboxResultHair, uId: uId);
-        addSalonServicesFace(face: checkboxResultHair, uId: uId);
-        addSalonServicesBody(body: checkboxResultHair, uId: uId);
+        addSalonServicesFace(face: checkboxResultFace, uId: uId);
+        addSalonServicesBody(body: checkboxResultBody , uId: uId);
         emit(RegisterCreateSalonSuccessState(uId));
       },
     ).catchError(

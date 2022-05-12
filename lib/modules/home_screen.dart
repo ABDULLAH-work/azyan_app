@@ -1,4 +1,6 @@
+import 'package:azyan/constance/component.dart';
 import 'package:azyan/models/add_salon_model.dart';
+import 'package:azyan/modules/salon_details_screen.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
 import 'package:azyan/shared/cubit_app/states.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +121,7 @@ class Home extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: cubit.salon.length,
-                                  itemBuilder: (context, index) => buildSalon(cubit.salon[index]),
+                                  itemBuilder: (context, index) => buildSalon( context,cubit.salon[index]),
                                   separatorBuilder: (context, index) => SizedBox(
                                         width: 10.0,
                                       )),
@@ -185,10 +187,13 @@ class Home extends StatelessWidget {
   }
 
   Widget buildSalon(
+      context,
     AddSalonModel model,
   ) {
     return  InkWell(
-      onTap: () {},
+      onTap: () {
+        PushToNextScreen(context,SalonDetailsScreen(model));
+      },
       child: Stack(
         children: [
           Column(

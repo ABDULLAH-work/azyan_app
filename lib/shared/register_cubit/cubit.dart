@@ -39,16 +39,12 @@ class RegisterCubit extends Cubit<RegisterStates> {
   String? selectedLocation; // Option 2
   String? selectStatus; // Option 2
 
-  void changDropDownLocation(String? Location) {
-    if (selectedLocation != locations) {
+  void changDropDownLocation() {
       emit(ChangeDropDownLocationState());
-    }
   }
 
-  void changDropDownStatus(String? Location) {
-    if (selectedLocation != locations) {
+  void changDropDownStatus() {
       emit(ChangeDropDownStatusState());
-    }
   }
 
   void userRegister({

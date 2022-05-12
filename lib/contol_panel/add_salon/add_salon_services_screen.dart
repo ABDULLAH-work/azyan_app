@@ -2,6 +2,8 @@ import 'package:azyan/constance/component.dart';
 import 'package:azyan/contol_panel/management_salon_screen.dart';
 import 'package:azyan/shared/add_salon_cubit/cubit.dart';
 import 'package:azyan/shared/add_salon_cubit/states.dart';
+import 'package:azyan/shared/cotrol_panel_cubit/cubit.dart';
+import 'package:azyan/shared/cubit_app/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -11,12 +13,23 @@ class AddSalonServices extends StatelessWidget {
   String email;
   String password;
   String phone;
+  String description;
+  String location;
+  int hoursStart;
+  int hoursEnd;
+
 
   AddSalonServices(
       {required this.name,
       required this.email,
       required this.password,
-      required this.phone});
+      required this.phone,
+      required this.description,
+      required this.location,
+      required this.hoursStart,
+      required this.hoursEnd,
+
+      });
 
   Widget build(BuildContext context) {
     bool checkedHair = false;
@@ -35,10 +48,20 @@ class AddSalonServices extends StatelessWidget {
             hair: checkedHair ? 'true' : 'false',
             face: checkedFace ? 'true' : 'false',
             body: checkedBody ? 'true' : 'false',
+            description: description,
+            location: location,
+            stateWork:  'work',
+            hoursEnd: hoursEnd,
+            hoursStart: hoursStart,
+            openOrClose: 1,
+            ratting:  3.5,
           );
 
         }
         if (state is RegisterCreateSalonSuccessState) {
+          ControlPanelCubit.get(context).salon.clear();
+          ControlPanelCubit.get(context).getSalonData();
+
           NavegatandFinish(
             context,
             ManagementSalonScreen(),

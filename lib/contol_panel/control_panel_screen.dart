@@ -1,21 +1,26 @@
-import 'dart:ui';
-
 import 'package:azyan/constance/component.dart';
+import 'package:azyan/contol_panel/add_salon/add_salon_screen.dart';
+import 'package:azyan/contol_panel/management_salon_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'auth_screen/login_screen.dart';
-
-class SalonServicesUser extends StatelessWidget {
-  const SalonServicesUser({Key? key}) : super(key: key);
+class AdminScreen extends StatelessWidget {
+  const AdminScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        title: Text(
+          'Control Panel',
+          style: ThemeData().textTheme.bodyText2,
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             bottom(
@@ -25,11 +30,11 @@ class SalonServicesUser extends StatelessWidget {
               height: 50,
               color: Colors.white.withOpacity(0),
               onPressed: () {
-                PushToNextScreen(context, LoginScreen());
+                PushToNextScreen(context, AddSalonScreen());
               },
-              text: 'Login',
+              text: 'Add Salon',
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             bottom(
@@ -39,11 +44,11 @@ class SalonServicesUser extends StatelessWidget {
               height: 50,
               color: Colors.white.withOpacity(0),
               onPressed: () {
-                //PushToNextScreen(context, RegisterScreen());
+                PushToNextScreen(context, ManagementSalonScreen());
               },
-              text: 'Create New Service',
+              text: 'Management Salon',
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             bottom(
@@ -52,32 +57,27 @@ class SalonServicesUser extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               height: 50,
               color: Colors.white.withOpacity(0),
-              onPressed: () {
-                //sPushToNextScreen(context, RegisterScreen());
-              },
-              text: 'Login to Salon',
+              onPressed: () {},
+              text: 'Management Users',
             ),
-            SizedBox(
-              height: 80.0,
+            const SizedBox(
+              height: 20.0,
+            ),
+            bottom(
+              borderColor: Colors.grey,
+              Colortext: HexColor('#ff5555'),
+              width: MediaQuery.of(context).size.width / 2,
+              height: 50,
+              color: Colors.white.withOpacity(0),
+              onPressed: () {},
+              text: 'Management Services',
+            ),
+            const SizedBox(
+              height: 20.0,
             ),
           ],
         ),
       ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'AZYAN',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 35.0, fontWeight: FontWeight.w400,),
-            ),
-          ),
-        ],
-      ),
-      
     );
   }
 }

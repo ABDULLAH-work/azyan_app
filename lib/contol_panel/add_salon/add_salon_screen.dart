@@ -1,5 +1,5 @@
 import 'package:azyan/constance/component.dart';
-import 'package:azyan/contol_panel/add_salon/add_salon_services.dart';
+import 'package:azyan/contol_panel/add_salon/add_salon_services_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:azyan/shared/add_salon_cubit/cubit.dart';
 import 'package:azyan/shared/add_salon_cubit/states.dart';
@@ -12,6 +12,7 @@ class AddSalonScreen extends StatelessWidget {
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
+  var descriptionController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -176,6 +177,150 @@ class AddSalonScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Description',
+                          hintText: 'Enter details about salon',
+                          hintStyle: TextStyle(fontSize: 11.5),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 22,
+                            color: Colors.red,
+                          ),
+                        ),
+                        controller: descriptionController,
+                        minLines: 4,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Location',
+                                style: TextStyle(color: Colors.redAccent),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.blue[100],
+                                ),
+                                height: 22,
+                                child: DropdownButton(
+                                  underline: SizedBox(),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_outlined),
+                                  iconEnabledColor: HexColor('#ff5555'),
+                                  hint: const Text('                       '),
+                                  // Not necessary for Option 1
+                                  value: cubit.selectedLocation,
+                                  onChanged: (newValue) {
+                                    cubit.selectedLocation =
+                                        newValue.toString();
+                                    cubit.changDropDownLocation();
+                                  },
+                                  items: cubit.locations.map((location) {
+                                    return DropdownMenuItem(
+                                      child: Text(location),
+                                      value: location,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 13,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Time Start',
+                                style: TextStyle(color: Colors.redAccent),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.blue[100],
+                                ),
+                                height: 22,
+                                child: DropdownButton(
+                                  underline: SizedBox(),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_outlined),
+                                  iconEnabledColor: HexColor('#ff5555'),
+                                  hint: Text('            '),
+                                  // Not necessary for Option 1
+                                  value: cubit.selectedTimeStart,
+                                  onChanged: (newValue) {
+                                    cubit.selectedTimeStart =
+                                        int.tryParse(newValue.toString());
+                                    cubit.changDropDownTimeStart();
+                                  },
+                                  items: cubit.timeStart.map((timeStart) {
+                                    return DropdownMenuItem(
+                                      child: Text(timeStart.toString()),
+                                      value: timeStart,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 13,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Time End',
+                                style: TextStyle(color: Colors.redAccent),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.blue[100],
+                                ),
+                                height: 22,
+                                child: DropdownButton(
+                                  underline: SizedBox(),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_outlined),
+                                  iconEnabledColor: HexColor('#ff5555'),
+                                  hint: Text('            '),
+                                  // Not necessary for Option 1
+                                  value: cubit.selectedTimeEnd,
+                                  onChanged: (newValue) {
+                                    cubit.selectedTimeEnd =
+                                        int.tryParse(newValue.toString());
+                                    cubit.changDropDownTimeEnd();
+                                  },
+                                  items: cubit.timeEnd.map((timeEnd) {
+                                    return DropdownMenuItem(
+                                      child: Text(timeEnd.toString()),
+                                      value: timeEnd,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                       const SizedBox(
                         height: 50.0,
                       ),
@@ -196,7 +341,10 @@ class AddSalonScreen extends StatelessWidget {
                                     email: emailController.text,
                                     password: passwordController.text,
                                     phone: phoneController.text,
-
+                                    description: descriptionController.text,
+                                    location: cubit.selectedLocation!,
+                                    hoursStart: cubit.selectedTimeStart!,
+                                    hoursEnd: cubit.selectedTimeEnd!,
                                   ),
                                 );
                               } else {

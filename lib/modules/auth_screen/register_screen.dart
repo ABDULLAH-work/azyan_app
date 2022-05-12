@@ -24,8 +24,8 @@ class RegisterScreen extends StatelessWidget {
         if (state is RegisterCreateUserSuccessState) {
           cachHelper.Savedataa(key: 'uId', value: state.Uid).then((value) {
             uId = cachHelper.getData('uId');
-            AppCubit.get(context).getUserData();
-            NavegatandFinish(context, AzyanLayout());
+            AppCubit.get(context).getUserData(context);
+           // NavegatandFinish(context, AzyanLayout());
           });
         }
         if (state is RegisterUploadImageSuccessState) {
@@ -219,6 +219,7 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 height: 22,
                                 child: DropdownButton(
+                                  underline: SizedBox(),
                                   icon:
                                    const   Icon(Icons.keyboard_arrow_down_outlined),
                                   iconEnabledColor: HexColor('#ff5555'),
@@ -228,8 +229,7 @@ class RegisterScreen extends StatelessWidget {
                                   onChanged: (newValue) {
                                     cubit.selectedLocation =
                                         newValue.toString();
-                                    cubit.changDropDownLocation(
-                                        newValue.toString());
+                                    cubit.changDropDownLocation();
                                   },
                                   items: cubit.locations.map((location) {
                                     return DropdownMenuItem(
@@ -259,6 +259,7 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 height: 22,
                                 child: DropdownButton(
+                                  underline: SizedBox(),
                                   icon:
                                    const  Icon(Icons.keyboard_arrow_down_outlined),
                                   iconEnabledColor: HexColor('#ff5555'),
@@ -267,13 +268,12 @@ class RegisterScreen extends StatelessWidget {
                                   value: cubit.selectStatus,
                                   onChanged: (newValue) {
                                     cubit.selectStatus = newValue.toString();
-                                    cubit.changDropDownStatus(
-                                        newValue.toString());
+                                    cubit.changDropDownStatus();
                                   },
-                                  items: cubit.status.map((location) {
+                                  items: cubit.status.map((status) {
                                     return DropdownMenuItem(
-                                      child: Text(location),
-                                      value: location,
+                                      child: Text(status),
+                                      value: status,
                                     );
                                   }).toList(),
                                 ),

@@ -1,5 +1,5 @@
 import 'package:azyan/constance/component.dart';
-import 'package:azyan/modules/salon_services_user.dart';
+import 'package:azyan/modules/salon_or_services_or_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/on_bordind_model.dart';
@@ -102,7 +102,7 @@ class _OnBording_ScreenState extends State<OnBording_Screen> {
                           .then((value) {
                         if (value) {
                           print(value);
-                           NavegatandFinish(context, SalonServicesUser());
+                           NavegatandFinish(context, SalonOrServicesOrUser());
                         }
                       });
                       print('last');
