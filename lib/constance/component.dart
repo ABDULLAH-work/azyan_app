@@ -56,6 +56,30 @@ Widget bottom({
           ),
         ),
       ),
+    );Widget customBottom({
+  required double width,
+  required double height,
+  required Color color,
+  required VoidCallback? onPressed,
+  required Widget widget,
+  required Color Colortext,
+  required Color borderColor,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: borderColor,
+        ),
+        color: color,
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: MaterialButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        child: widget
+      ),
     );
 
 Widget defulteditTextx({

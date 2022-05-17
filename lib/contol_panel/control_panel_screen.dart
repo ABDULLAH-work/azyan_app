@@ -1,7 +1,10 @@
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/contol_panel/add_salon/add_salon_screen.dart';
 import 'package:azyan/contol_panel/management_salon_screen.dart';
+import 'package:azyan/shared/cotrol_panel_cubit/cubit.dart';
+import 'package:azyan/shared/cotrol_panel_cubit/states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -9,75 +12,80 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        title: Text(
-          'Control Panel',
-          style: ThemeData().textTheme.bodyText2,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            bottom(
-              borderColor: Colors.grey,
-              Colortext: HexColor('#ff5555'),
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              color: Colors.white.withOpacity(0),
-              onPressed: () {
-                PushToNextScreen(context, AddSalonScreen());
-              },
-              text: 'Add Salon',
+    return BlocConsumer<ControlPanelCubit, ControlPanelStates>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            elevation: 0.0,
+            title: Text(
+              'Control Panel',
+              style: ThemeData().textTheme.bodyText2,
             ),
-            const SizedBox(
-              height: 20.0,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                bottom(
+                  borderColor: Colors.grey,
+                  Colortext: HexColor('#ff5555'),
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 50,
+                  color: Colors.white.withOpacity(0),
+                  onPressed: () {
+                    PushToNextScreen(context, AddSalonScreen());
+                  },
+                  text: 'Add Salon',
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                bottom(
+                  borderColor: Colors.grey,
+                  Colortext: HexColor('#ff5555'),
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 50,
+                  color: Colors.white.withOpacity(0),
+                  onPressed: () {
+                    PushToNextScreen(context, ManagementSalonScreen());
+                  },
+                  text: 'Management Salon',
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                bottom(
+                  borderColor: Colors.grey,
+                  Colortext: HexColor('#ff5555'),
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 50,
+                  color: Colors.white.withOpacity(0),
+                  onPressed: () {},
+                  text: 'Management Users',
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                bottom(
+                  borderColor: Colors.grey,
+                  Colortext: HexColor('#ff5555'),
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: 50,
+                  color: Colors.white.withOpacity(0),
+                  onPressed: () {},
+                  text: 'Management Services',
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ],
             ),
-            bottom(
-              borderColor: Colors.grey,
-              Colortext: HexColor('#ff5555'),
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              color: Colors.white.withOpacity(0),
-              onPressed: () {
-                PushToNextScreen(context, ManagementSalonScreen());
-              },
-              text: 'Management Salon',
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            bottom(
-              borderColor: Colors.grey,
-              Colortext: HexColor('#ff5555'),
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              color: Colors.white.withOpacity(0),
-              onPressed: () {},
-              text: 'Management Users',
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            bottom(
-              borderColor: Colors.grey,
-              Colortext: HexColor('#ff5555'),
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50,
-              color: Colors.white.withOpacity(0),
-              onPressed: () {},
-              text: 'Management Services',
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      listener: (context, state) {},
     );
   }
 }
