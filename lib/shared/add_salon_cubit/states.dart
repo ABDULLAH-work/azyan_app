@@ -36,5 +36,11 @@ class RegisterCreateSalonSuccessState extends AddSalonStates {
 
 class RegisterCreateSalonErrorState extends AddSalonStates {}
 
+class UpdateSalonLoadingState extends AddSalonStates {}
+
+class UpdateSalonSuccessState extends AddSalonStates {}
+
+class UpdateSalonErrorState extends AddSalonStates {}
+
 
 

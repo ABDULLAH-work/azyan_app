@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:azyan/constance/constants.dart';
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/shared/add_salon_cubit/states.dart';
 import 'package:bloc/bloc.dart';
@@ -17,6 +18,9 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
   IconData iconData = Icons.visibility_outlined;
 
   bool isoscureShow = true;
+  String? uIdHairUpdate;
+  String? uIdFaceUpdate;
+  String? uIdBodyUpdate;
 
   void eyeisShow() {
     iconData = isoscureShow
@@ -26,7 +30,6 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     emit(AddSalonShowPasswordStates());
   }
 
-
   List<String> locations = [
     'Ajman',
     'sharjh',
@@ -34,27 +37,22 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
   ];
   String? selectedLocation; // Option 2
 
-  List<int> timeStart = [
-    8,9,10,11,12,13
-  ];
+  List<int> timeStart = [8, 9, 10, 11, 12, 13];
   int? selectedTimeStart; // Option 2
 
-  List<int> timeEnd = [
-    8,9,10,11,12,13
-  ];
+  List<int> timeEnd = [8, 9, 10, 11, 12, 13];
   int? selectedTimeEnd; // Option 2
 
   void changDropDownLocation() {
-
-      emit(ChangeDropDownLocationState());
-
+    emit(ChangeDropDownLocationState());
   }
+
   void changDropDownTimeStart() {
-      emit(ChangeDropDownTimeStartState());
+    emit(ChangeDropDownTimeStartState());
+  }
 
-  }  void changDropDownTimeEnd() {
-      emit(ChangeDropDownTimeEndState());
-
+  void changDropDownTimeEnd() {
+    emit(ChangeDropDownTimeEndState());
   }
 
   List<String> servicesHair = [
@@ -206,7 +204,7 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required String state,
     required String hair,
     required String face,
-    required String body,   
+    required String body,
     required String description,
     required String location,
     required String stateWork,
@@ -214,6 +212,9 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required int hoursStart,
     required int hoursEnd,
     required double ratting,
+    required String uIdBody,
+    required String uIdFace,
+    required String uIdHair,
   }) {
     emit(SalonRegisterLoadingState());
     FirebaseAuth.instance
@@ -224,25 +225,26 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
         .then(
       (value) {
         salonCreate(
-          name: name,
-          email: email,
-          phone: phone,
-          password: password,
-          uId: value.user!.uid,
-          image: image,
-          state: state,
-          hair: hair,
-          face: face,
-          body: body,
-          description: description,
-          location: location,
-          stateWork:  stateWork,
-          hoursEnd: hoursEnd,
-          hoursStart: hoursStart,
-          openOrClose: openOrClose,
-          ratting:  ratting,
-          
-        );
+            name: name,
+            email: email,
+            phone: phone,
+            password: password,
+            uId: value.user!.uid,
+            image: image,
+            state: state,
+            hair: hair,
+            face: face,
+            body: body,
+            description: description,
+            location: location,
+            stateWork: stateWork,
+            hoursEnd: hoursEnd,
+            hoursStart: hoursStart,
+            openOrClose: openOrClose,
+            ratting: ratting,
+            uIdBody: uIdBody,
+            uIdFace: uIdFace,
+            uIdHair: uIdHair);
       },
     ).catchError(
       (error) {
@@ -270,35 +272,96 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required int hoursStart,
     required int hoursEnd,
     required double ratting,
+    required String uIdBody,
+    required String uIdFace,
+    required String uIdHair,
   }) {
     AddSalonModel model = AddSalonModel(
-      name: name,
-      email: email,
-      password: password,
-      phone: phone,
-      uId: uId,
-      image: image,
-      state: state,
-      body: body,
-      face: face,
-      hair: hair,
-      description: description,
-      location: location,
-      stateWork:  stateWork,
-      hoursEnd: hoursEnd,
-      hoursStart: hoursStart,
-      openOrClose: openOrClose,
-      ratting:  ratting,
-    );
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        uId: uId,
+        image: image,
+        state: state,
+        body: body,
+        face: face,
+        hair: hair,
+        description: description,
+        location: location,
+        stateWork: stateWork,
+        hoursEnd: hoursEnd,
+        hoursStart: hoursStart,
+        openOrClose: openOrClose,
+        ratting: ratting,
+        uIdBody: uIdBody,
+        uIdFace: uIdFace,
+        uIdHair: uIdHair);
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .set(model.toMap())
         .then(
       (value) {
-        addSalonServicesHair(hair: checkboxResultHair, uId: uId);
-        addSalonServicesFace(face: checkboxResultFace, uId: uId);
-        addSalonServicesBody(body: checkboxResultBody , uId: uId);
+        addSalonServicesHair(
+          hairMap: checkboxResultHair,
+          uId: uId,
+          name: name,
+          email: email,
+          password: password,
+          phone: phone,
+          image: image,
+          state: state,
+          body: body,
+          face: face,
+          hair: hair,
+          description: description,
+          location: location,
+          stateWork: stateWork,
+          hoursEnd: hoursEnd,
+          hoursStart: hoursStart,
+          openOrClose: openOrClose,
+          ratting: ratting,
+          uIdBody: uIdBody,
+          uIdFace: uIdFace,
+        );
+        addSalonServicesFace(faceMap: checkboxResultFace, uId: uId,
+          name: name,
+          email: email,
+          password: password,
+          phone: phone,
+          image: image,
+          state: state,
+          body: body,
+          face: face,
+          hair: hair,
+          description: description,
+          location: location,
+          stateWork: stateWork,
+          hoursEnd: hoursEnd,
+          hoursStart: hoursStart,
+          openOrClose: openOrClose,
+          ratting: ratting,
+          );
+        addSalonServicesBody(bodyMap: checkboxResultBody, uId: uId,
+          name: name,
+          email: email,
+          password: password,
+          phone: phone,
+          image: image,
+          state: state,
+          body: body,
+          face: face,
+          hair: hair,
+          description: description,
+          location: location,
+          stateWork: stateWork,
+          hoursEnd: hoursEnd,
+          hoursStart: hoursStart,
+          openOrClose: openOrClose,
+          ratting: ratting,
+          );
+
         emit(RegisterCreateSalonSuccessState(uId));
       },
     ).catchError(
@@ -309,17 +372,57 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
   }
 
   void addSalonServicesHair({
-    required Map<String, dynamic> hair,
+    required Map<String, dynamic> hairMap,
     required String uId,
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String image,
+    required String state,
+    required String hair,
+    required String face,
+    required String body,
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
+    required String uIdBody,
+    required String uIdFace,
   }) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .collection('hair')
-        .add(hair)
+        .add(hairMap)
         .then(
       (value) {
         print(value.id);
+        uIdHairUpdate = value.id;
+        updateSalon(
+            name: name,
+            email: email,
+            password: password,
+            phone: phone,
+            uId: uId,
+            image: image,
+            state: state,
+            hair: hair,
+            face: face,
+            body: body,
+            description: description,
+            location: location,
+            stateWork: stateWork,
+            openOrClose: openOrClose,
+            hoursStart: hoursStart,
+            hoursEnd: hoursEnd,
+            ratting: ratting,
+            uIdBody: uIdBodyUpdate!,
+            uIdFace: uIdFaceUpdate!,
+            uIdHair: value.id);
       },
     ).catchError(
       (error) {},
@@ -327,17 +430,56 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
   }
 
   void addSalonServicesFace({
-    required Map<String, dynamic> face,
+    required Map<String, dynamic> faceMap,
     required String uId,
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String image,
+    required String state,
+    required String hair,
+    required String face,
+    required String body,
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
+
   }) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .collection('Face')
-        .add(face)
+        .add(faceMap)
         .then(
       (value) {
         print(value.id);
+        uIdFaceUpdate = value.id;
+        updateSalon(
+            name: name,
+            email: email,
+            password: password,
+            phone: phone,
+            uId: uId,
+            image: image,
+            state: state,
+            hair: hair,
+            face: face,
+            body: body,
+            description: description,
+            location: location,
+            stateWork: stateWork,
+            openOrClose: openOrClose,
+            hoursStart: hoursStart,
+            hoursEnd: hoursEnd,
+            ratting: ratting,
+            uIdBody: uIdBodyUpdate!,
+            uIdFace: value.id,
+            uIdHair: uIdHairUpdate!);
       },
     ).catchError(
       (error) {},
@@ -345,20 +487,114 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
   }
 
   void addSalonServicesBody({
-    required Map<String, dynamic> body,
+    required Map<String, dynamic> bodyMap,
     required String uId,
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String image,
+    required String state,
+    required String hair,
+    required String face,
+    required String body,
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
   }) {
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .collection('Body')
-        .add(body)
+        .add(bodyMap)
         .then(
       (value) {
         print(value.id);
+        uIdBodyUpdate = value.id;
+        updateSalon(
+            name: name,
+            email: email,
+            password: password,
+            phone: phone,
+            uId: uId,
+            image: image,
+            state: state,
+            hair: hair,
+            face: face,
+            body: body,
+            description: description,
+            location: location,
+            stateWork: stateWork,
+            openOrClose: openOrClose,
+            hoursStart: hoursStart,
+            hoursEnd: hoursEnd,
+            ratting: ratting,
+            uIdBody: value.id,
+            uIdFace: uIdFaceUpdate!,
+            uIdHair: uIdHairUpdate!);
       },
     ).catchError(
       (error) {},
     );
+  }
+
+  void updateSalon({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    required String uId,
+    required String image,
+    required String state,
+    required String hair,
+    required String face,
+    required String body,
+    required String description,
+    required String location,
+    required String stateWork,
+    required int openOrClose,
+    required int hoursStart,
+    required int hoursEnd,
+    required double ratting,
+    required String uIdBody,
+    required String uIdFace,
+    required String uIdHair,
+  }) {
+    emit(UpdateSalonLoadingState());
+    AddSalonModel model = AddSalonModel(
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        uId: uId,
+        image: image,
+        state: state,
+        body: body,
+        face: face,
+        hair: hair,
+        description: description,
+        location: location,
+        stateWork: stateWork,
+        hoursEnd: hoursEnd,
+        hoursStart: hoursStart,
+        openOrClose: openOrClose,
+        ratting: ratting,
+        uIdBody: uIdBody,
+        uIdFace: uIdFace,
+        uIdHair: uIdHair);
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+      emit(UpdateSalonSuccessState());
+    }).catchError((error) {
+      emit(UpdateSalonErrorState());
+    });
   }
 }

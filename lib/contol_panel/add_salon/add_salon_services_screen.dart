@@ -55,6 +55,7 @@ class AddSalonServices extends StatelessWidget {
             hoursStart: hoursStart,
             openOrClose: 1,
             ratting:  3.5,
+            uIdHair: 'null',uIdFace: 'null',uIdBody: 'null'
           );
 
         }
