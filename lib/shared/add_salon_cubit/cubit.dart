@@ -343,7 +343,8 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
           openOrClose: openOrClose,
           ratting: ratting,
           );
-        addSalonServicesBody(bodyMap: checkboxResultBody, uId: uId,
+        addSalonServicesBody(bodyMap: checkboxResultBody,
+          uId: uId,
           name: name,
           email: email,
           password: password,

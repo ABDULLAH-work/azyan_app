@@ -54,4 +54,14 @@ class AppCubitGetSalonServicesBodyDataSuccessState extends AppState {}
 
 class AppCubitGetSalonServicesBodyDataErrorState extends AppState {}
 
-class AddSalonFillCheckboxServicesStates extends AppState {}
+class AppCubitFillCheckboxServicesStates extends AppState {}
+
+class CreateBookingSuccessState extends AppState {}
+
+class CreateBookingErrorState extends AppState {}
+
+class UpdateBookingLoadingState extends AppState {}
+
+class UpdateBookingSuccessState extends AppState {}
+
+class UpdateBookingErrorState extends AppState {}

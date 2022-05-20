@@ -2,6 +2,7 @@ import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/constance/constants.dart';
 import 'package:azyan/models/add_salon_model.dart';
+import 'package:azyan/models/book_model.dart';
 import 'package:azyan/models/services_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
 import 'package:azyan/modules/auth_screen/login_screen.dart';
@@ -34,10 +35,9 @@ class AppCubit extends Cubit<AppState> {
             : Navigator.pop(context);
       }
     }).catchError(
-          (error) {
+      (error) {
         print(
           error.toString(),
-
         );
         emit(
           AppCubitGetUserErrorState(error.toString()),
@@ -81,13 +81,12 @@ class AppCubit extends Cubit<AppState> {
         .where('state', isEqualTo: 'salon')
         .get()
         .then((value) {
-
       value.docs.forEach((element) {
         salon.add(AddSalonModel.fromJson(element.data()));
       });
       emit(AppCubitGetSalonSuccessState());
     }).catchError(
-          (error) {
+      (error) {
         print(error.toString());
         emit(AppCubitGetSalonErrorState());
       },
@@ -102,84 +101,94 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangDateBookingState());
   }
 
-
-
-
   // void changDropDownServicesBooking() {emit(ChangDropDownServicesBookingState());}
-
-
 
   List servicesBooking = [];
 
+  ModelSalonServicesHair modelSalonServicesHair = ModelSalonServicesHair();
 
-  ModelSalonServicesHair modelSalonServicesHair=ModelSalonServicesHair();
-
-  void getSalonServicesHairData(String  uIdSalon,String uIdHAir) {
-     emit(AppCubitGetSalonServicesHairDataLoadingState());
+  void getSalonServicesHairData(String uIdSalon, String uIdHAir) {
+    emit(AppCubitGetSalonServicesHairDataLoadingState());
     FirebaseFirestore.instance
         .collection('users')
-        .doc(uIdSalon).collection('hair')
-        .doc(uIdHAir).get().then((value) {
+        .doc(uIdSalon)
+        .collection('hair')
+        .doc(uIdHAir)
+        .get()
+        .then((value) {
       modelSalonServicesHair = ModelSalonServicesHair.fromJson(value.data()!);
       print(modelSalonServicesHair.services1);
-      if(modelSalonServicesHair.services1==true) {
+      if (modelSalonServicesHair.services1 == true) {
         servicesBooking.add('services 1');
-      } if(modelSalonServicesHair.services2==true) {
+      }
+      if (modelSalonServicesHair.services2 == true) {
         servicesBooking.add('services 2');
-      } if(modelSalonServicesHair.services3==true) {
+      }
+      if (modelSalonServicesHair.services3 == true) {
         servicesBooking.add('services 3');
-      } if(modelSalonServicesHair.services4==true) {
+      }
+      if (modelSalonServicesHair.services4 == true) {
         servicesBooking.add('services 4');
-      } if(modelSalonServicesHair.services5==true) {
+      }
+      if (modelSalonServicesHair.services5 == true) {
         servicesBooking.add('services 5');
-      } if(modelSalonServicesHair.services6==true) {
+      }
+      if (modelSalonServicesHair.services6 == true) {
         servicesBooking.add('services 6');
-      } if(modelSalonServicesHair.services7==true) {
+      }
+      if (modelSalonServicesHair.services7 == true) {
         servicesBooking.add('services 7');
-      } if(modelSalonServicesHair.services1==true) {
+      }
+      if (modelSalonServicesHair.services1 == true) {
         servicesBooking.add('services 8');
       }
       print(servicesBooking);
 
       emit(AppCubitGetSalonServicesHairDataSuccessState());
     }).catchError(
-          (error) {
+      (error) {
         print(error.toString());
 
-         emit(AppCubitGetSalonServicesHairDataErrorState());
+        emit(AppCubitGetSalonServicesHairDataErrorState());
       },
     );
   }
 
+  ModelSalonServicesFace modelSalonServicesFace = ModelSalonServicesFace();
 
-
-  ModelSalonServicesFace modelSalonServicesFace=ModelSalonServicesFace();
-
-  void getSalonServicesFaceData(String  uIdSalon,String uIdFace) {
+  void getSalonServicesFaceData(String uIdSalon, String uIdFace) {
     emit(AppCubitGetSalonServicesFaceDataLoadingState());
     FirebaseFirestore.instance
         .collection('users')
-        .doc(uIdSalon).collection('Face')
-        .doc(uIdFace).get().then((value) {
+        .doc(uIdSalon)
+        .collection('Face')
+        .doc(uIdFace)
+        .get()
+        .then((value) {
       modelSalonServicesFace = ModelSalonServicesFace.fromJson(value.data()!);
-      if(modelSalonServicesFace.services1==true) {
+      if (modelSalonServicesFace.services1 == true) {
         servicesBooking.add('services 1');
-      } if(modelSalonServicesFace.services2==true) {
+      }
+      if (modelSalonServicesFace.services2 == true) {
         servicesBooking.add('services 2');
-      } if(modelSalonServicesFace.services3==true) {
+      }
+      if (modelSalonServicesFace.services3 == true) {
         servicesBooking.add('services 3');
-      } if(modelSalonServicesFace.services4==true) {
+      }
+      if (modelSalonServicesFace.services4 == true) {
         servicesBooking.add('services 4');
-      } if(modelSalonServicesFace.services5==true) {
+      }
+      if (modelSalonServicesFace.services5 == true) {
         servicesBooking.add('services 5');
-      } if(modelSalonServicesFace.services6==true) {
+      }
+      if (modelSalonServicesFace.services6 == true) {
         servicesBooking.add('services 6');
       }
       print(servicesBooking);
 
       emit(AppCubitGetSalonServicesFaceDataSuccessState());
     }).catchError(
-          (error) {
+      (error) {
         print(error.toString());
 
         emit(AppCubitGetSalonServicesFaceDataErrorState());
@@ -187,39 +196,44 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
+  ModelSalonServicesBody modelSalonServicesBody = ModelSalonServicesBody();
 
-  ModelSalonServicesBody modelSalonServicesBody=ModelSalonServicesBody();
-
-  void getSalonServicesBodyData(String  uIdSalon,String uIdBody) {
+  void getSalonServicesBodyData(String uIdSalon, String uIdBody) {
     emit(AppCubitGetSalonServicesBodyDataLoadingState());
     FirebaseFirestore.instance
         .collection('users')
-        .doc(uIdSalon).collection('Body')
-        .doc(uIdBody).get().then((value) {
+        .doc(uIdSalon)
+        .collection('Body')
+        .doc(uIdBody)
+        .get()
+        .then((value) {
       modelSalonServicesBody = ModelSalonServicesBody.fromJson(value.data()!);
-      if(modelSalonServicesBody.services1==true) {
+      if (modelSalonServicesBody.services1 == true) {
         servicesBooking.add('services 1');
-      } if(modelSalonServicesBody.services2==true) {
+      }
+      if (modelSalonServicesBody.services2 == true) {
         servicesBooking.add('services 2');
-      } if(modelSalonServicesBody.services3==true) {
+      }
+      if (modelSalonServicesBody.services3 == true) {
         servicesBooking.add('services 3');
-      } if(modelSalonServicesBody.services4==true) {
+      }
+      if (modelSalonServicesBody.services4 == true) {
         servicesBooking.add('services 4');
-      } if(modelSalonServicesBody.services5==true) {
+      }
+      if (modelSalonServicesBody.services5 == true) {
         servicesBooking.add('services 5');
       }
       print(servicesBooking);
 
       emit(AppCubitGetSalonServicesBodyDataSuccessState());
     }).catchError(
-          (error) {
+      (error) {
         print(error.toString());
 
         emit(AppCubitGetSalonServicesBodyDataErrorState());
       },
     );
   }
-
 
   List<bool>? isCheckedServices;
 
@@ -230,7 +244,7 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void checkboxResultFunction(value, index) {
-    emit(AddSalonFillCheckboxServicesStates());
+    emit(AppCubitFillCheckboxServicesStates());
     isCheckedServices![index] = value;
     checkboxResultServices.addEntries([
       MapEntry(
@@ -249,6 +263,100 @@ class AppCubit extends Cubit<AppState> {
     print(checkboxResultServices);
   }
 
+  void createBooking({
+    required String uIdUser,
+    required String uIdSalon,
+    required String uIdBook,
+    required String dateBook,
+    required String timeBook,
+    required String uIdServices,
+  }) {
+    BookModel bookModel = BookModel(
+        dateBook: dateBook,
+        timeBook: timeBook,
+        uIdBook: uIdBook,
+        uIdSalon: uIdSalon,
+        uIdServices: uIdServices,
+        uIdUser: uIdUser);
+    FirebaseFirestore.instance
+        .collection('Booking')
+        .add(bookModel.toMap())
+        .then(
+      (value) {
+        addBookSalonServices(
+          uIdUser: uIdUser,
+          uIdSalon: uIdSalon,
+          uIdBook: value.id,
+          uIdServices: uIdServices,
+          timeBook: timeBook,
+          dateBook: dateBook,
+          servicesMap: checkboxResultServices
+        );
+        emit(CreateBookingSuccessState());
 
+      },
+    ).catchError(
+      (error) {
+        emit(CreateBookingErrorState());
+      },
+    );
+  }
 
+  void addBookSalonServices({
+    required Map<String, dynamic> servicesMap,
+    required String uIdUser,
+    required String uIdSalon,
+    required String uIdBook,
+    required String dateBook,
+    required String timeBook,
+    required String uIdServices,
+  }) {
+    FirebaseFirestore.instance
+        .collection('Booking')
+        .doc(uIdBook )
+        .collection('Services Booking')
+        .add(servicesMap)
+        .then((value) {
+      print(value.id);
+
+      updateBooking(
+        uIdUser: uIdUser,
+        uIdSalon: uIdSalon,
+        uIdBook: uIdBook,
+        dateBook: dateBook,
+        timeBook: timeBook,
+        uIdServices: value.id,
+      );
+    }).catchError(
+      (error) {},
+    );
+  }
+
+  void updateBooking({
+    required String uIdUser,
+    required String uIdSalon,
+    required String uIdBook,
+    required String dateBook,
+    required String timeBook,
+    required String uIdServices,
+  }) {
+    emit(UpdateBookingLoadingState());
+    BookModel bookModel = BookModel(
+        dateBook: dateBook,
+        timeBook: timeBook,
+        uIdBook: uIdBook,
+        uIdSalon: uIdSalon,
+        uIdServices: uIdServices,
+        uIdUser: uIdUser);
+
+    FirebaseFirestore.instance
+        .collection('Booking')
+        .doc(uIdBook)
+        .update(bookModel.toMap())
+        .then((value) {
+      emit(UpdateBookingSuccessState());
+    }).catchError((error) {
+      emit(UpdateBookingErrorState());
+    });
+  }
 }

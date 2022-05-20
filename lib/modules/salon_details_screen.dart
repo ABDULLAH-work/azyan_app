@@ -1,4 +1,5 @@
 import 'package:azyan/constance/component.dart';
+import 'package:azyan/constance/constants.dart';
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
 import 'package:azyan/shared/cubit_app/states.dart';
@@ -21,7 +22,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
 
   @override
   void initState() {
-    AppCubit.get(context).servicesBooking.clear();
+    AppCubit
+        .get(context)
+        .servicesBooking
+        .clear();
     AppCubit.get(context).getSalonServicesHairData(
         widget.model.uId.toString(), widget.model.uIdHair.toString());
     AppCubit.get(context).getSalonServicesFaceData(
@@ -30,11 +34,9 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
         widget.model.uId.toString(), widget.model.uIdBody.toString());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
-
-
     List months = [
       'jan',
       'feb',
@@ -49,8 +51,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
       'nov',
       'dec'
     ];
-    int current_mon = DateTime.now().month;
-    String bookMonth;
+    int current_mon = DateTime
+        .now()
+        .month;
+   late String bookMonth;
     DateTime? bookMonthDisplay = DateTime.now();
     TimeOfDay bookHours = TimeOfDay(hour: widget.model.hoursStart!, minute: 0);
     return BlocConsumer<AppCubit, AppState>(
@@ -120,13 +124,16 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                           Text(
                             '4.5',
                             style:
-                                TextStyle(fontSize: 10.0, color: Colors.grey),
+                            TextStyle(fontSize: 10.0, color: Colors.grey),
                           ),
                         ],
                       ),
                       bottom(
                         borderColor: Colors.red,
-                        width: MediaQuery.of(context).size.width / 4,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 4,
                         height: 30,
                         color: HexColor('#EB4043'),
                         onPressed: () {},
@@ -136,7 +143,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                     ],
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 2,
                     height: 1.0,
                     color: Colors.grey,
                   ),
@@ -188,7 +198,9 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '${months[current_mon - 1]} ${DateTime.now().year}',
+                        '${months[current_mon - 1]} ${DateTime
+                            .now()
+                            .year}',
                         style: TextStyle(
                             color: Colors.red,
                             fontSize: 20.0,
@@ -203,7 +215,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                     children: [
                       customBottom(
                         borderColor: Colors.grey,
-                        width: MediaQuery.of(context).size.width / 8,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 8,
                         height: 50,
                         color: Colors.grey[100]!,
                         onPressed: () {
@@ -241,7 +256,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                       ),
                       customBottom(
                         borderColor: Colors.red,
-                        width: MediaQuery.of(context).size.width / 8,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 8,
                         height: 50,
                         color: Colors.red,
                         onPressed: () {
@@ -285,67 +303,86 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                       ),
                       customBottom(
                         borderColor: Colors.red,
-                        width: MediaQuery.of(context).size.width / 2.95,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 2.95,
                         height: 50,
                         color: Colors.red,
                         onPressed: () {
                           AppCubit.get(context).initState();
                           showDialog(
                               context: context,
-                              builder: (context) =>  StatefulBuilder(
-                                builder: (context,setState)=>AlertDialog(
-                                      content:  Column(
-                                        children: [
-                                          SizedBox(
-                                            width: double.maxFinite,
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: AppCubit.get(context).servicesBooking.length,
-                                              itemBuilder: (context, index) {
-                                                return CheckboxListTile(
-                                                  title: Text(AppCubit.get(context).servicesBooking[index]),
-                                                  value:AppCubit.get(context).isCheckedServices![index],
-                                                  onChanged: (value) {
-                                                    AppCubit.get(context)
-                                                        .checkboxResultFunction(value, index);
-                                                    setState(() {
+                              builder: (context) =>
+                                  StatefulBuilder(
+                                    builder: (context, setState) =>
+                                        AlertDialog(
+                                          content: Column(
+                                            children: [
+                                              SizedBox(
+                                                width: double.maxFinite,
+                                                child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: AppCubit
+                                                      .get(context)
+                                                      .servicesBooking
+                                                      .length,
+                                                  itemBuilder: (context,
+                                                      index) {
+                                                    return CheckboxListTile(
+                                                      title: Text(AppCubit
+                                                          .get(context)
+                                                          .servicesBooking[index]),
+                                                      value: AppCubit
+                                                          .get(context)
+                                                          .isCheckedServices![index],
+                                                      onChanged: (value) {
+                                                        AppCubit.get(context)
+                                                            .checkboxResultFunction(
+                                                            value, index);
+                                                        setState(() {
 
-                                                    });
-
+                                                        });
+                                                      },
+                                                    );
                                                   },
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: customBottom(
-                                              borderColor: Colors.red,
-                                              width: MediaQuery.of(context).size.width / 4.7,
-                                              height: 30,
-                                              color: Colors.red,
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                print(AppCubit.get(context)
-                                                .checkboxResultServices);
-                                              },
-                                              widget: Center(
-                                                child: Text(
-                                                  'ok',
-                                                  style:
-                                                  TextStyle(fontSize: 12.0, color: Colors.white),
                                                 ),
                                               ),
-                                              Colortext: Colors.white,
-                                            ),
+                                              SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              Align(
+                                                alignment: Alignment
+                                                    .bottomRight,
+                                                child: customBottom(
+                                                  borderColor: Colors.red,
+                                                  width: MediaQuery
+                                                      .of(context)
+                                                      .size
+                                                      .width / 4.7,
+                                                  height: 30,
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    print(AppCubit
+                                                        .get(context)
+                                                        .checkboxResultServices);
+                                                  },
+                                                  widget: Center(
+                                                    child: Text(
+                                                      'ok',
+                                                      style:
+                                                      TextStyle(fontSize: 12.0,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                  Colortext: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                              ));
+                                        ),
+                                  ));
                         },
                         widget: Row(
                           children: [
@@ -367,18 +404,26 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                       ),
                       customBottom(
                         borderColor: Colors.red,
-                        width: MediaQuery.of(context).size.width / 4.7,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 4.7,
                         height: 50,
                         color: Colors.red,
                         onPressed: () {
-
-
+                          AppCubit.get(context).createBooking(uIdUser: uId,
+                              uIdSalon
+                                  : widget.model.uId!,
+                              uIdBook: 'null',
+                              dateBook: bookMonth,
+                              timeBook: '${bookHours.hour}:${bookHours.minute}',
+                              uIdServices: 'null');
                         },
                         widget: Center(
                           child: Text(
                             'Booking',
                             style:
-                                TextStyle(fontSize: 12.0, color: Colors.white),
+                            TextStyle(fontSize: 12.0, color: Colors.white),
                           ),
                         ),
                         Colortext: Colors.white,
