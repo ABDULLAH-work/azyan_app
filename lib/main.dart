@@ -28,8 +28,9 @@ Future<void> main() async {
   if (onBoardingFinish != null) {
     if (uId == null) {
       start = SalonOrServicesOrUser();
-    } else
+    } else {
       start = AzyanLayout();
+    }
   } else {
     start = OnBording_Screen();
   }

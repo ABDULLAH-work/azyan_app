@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 
+import 'chat_details/chat_details_screen.dart';
+
 class SalonDetailsScreen extends StatefulWidget {
   final AddSalonModel model;
 
@@ -22,6 +24,7 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
 
   @override
   void initState() {
+    AppCubit.get(context).messages=[];
     AppCubit
         .get(context)
         .servicesBooking
@@ -54,7 +57,7 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
     int current_mon = DateTime
         .now()
         .month;
-   late String bookMonth;
+    String? bookMonth;
     DateTime? bookMonthDisplay = DateTime.now();
     TimeOfDay bookHours = TimeOfDay(hour: widget.model.hoursStart!, minute: 0);
     return BlocConsumer<AppCubit, AppState>(
@@ -136,7 +139,11 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                             .width / 4,
                         height: 30,
                         color: HexColor('#EB4043'),
-                        onPressed: () {},
+                        onPressed: () {
+                          PushToNextScreen(context,
+                              ChatDetailsScreen(addSalonModel: widget.model,)
+                          );
+                        },
                         text: 'Chat',
                         Colortext: Colors.white,
                       ),
@@ -411,13 +418,15 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                         height: 50,
                         color: Colors.red,
                         onPressed: () {
+                          bookMonth != null ?
                           AppCubit.get(context).createBooking(uIdUser: uId,
                               uIdSalon
                                   : widget.model.uId!,
                               uIdBook: 'null',
-                              dateBook: bookMonth,
+                              dateBook: bookMonth!,
                               timeBook: '${bookHours.hour}:${bookHours.minute}',
-                              uIdServices: 'null');
+                              uIdServices: 'null') : print(
+                              'please select month');
                         },
                         widget: Center(
                           child: Text(

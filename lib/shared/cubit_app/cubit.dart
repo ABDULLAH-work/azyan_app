@@ -1,17 +1,20 @@
 import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/constance/constants.dart';
+import 'package:azyan/contol_panel/salon_dashboard/salon_dashboard_screen.dart';
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/models/book_model.dart';
+import 'package:azyan/models/message_model.dart';
 import 'package:azyan/models/services_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
 import 'package:azyan/modules/auth_screen/login_screen.dart';
-import 'package:azyan/modules/chat_screen.dart';
+import 'package:azyan/modules/chats/chat_screen.dart';
 import 'package:azyan/modules/home_screen.dart';
 import 'package:azyan/modules/my_account_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +35,7 @@ class AppCubit extends Cubit<AppState> {
       if (state is AppCubitGetUserSuccessState) {
         model.state == 'user'
             ? NavegatandFinish(context, AzyanLayout())
-            : Navigator.pop(context);
+            : NavegatandFinish(context, SalonDashboardScreen());
       }
     }).catchError(
       (error) {
@@ -92,6 +95,11 @@ class AppCubit extends Cubit<AppState> {
       },
     );
   }
+
+
+  // booking
+
+
 
   void changTimeBookingState() {
     emit(ChangTimeBookingState());
@@ -284,16 +292,14 @@ class AppCubit extends Cubit<AppState> {
         .then(
       (value) {
         addBookSalonServices(
-          uIdUser: uIdUser,
-          uIdSalon: uIdSalon,
-          uIdBook: value.id,
-          uIdServices: uIdServices,
-          timeBook: timeBook,
-          dateBook: dateBook,
-          servicesMap: checkboxResultServices
-        );
+            uIdUser: uIdUser,
+            uIdSalon: uIdSalon,
+            uIdBook: value.id,
+            uIdServices: uIdServices,
+            timeBook: timeBook,
+            dateBook: dateBook,
+            servicesMap: checkboxResultServices);
         emit(CreateBookingSuccessState());
-
       },
     ).catchError(
       (error) {
@@ -313,7 +319,7 @@ class AppCubit extends Cubit<AppState> {
   }) {
     FirebaseFirestore.instance
         .collection('Booking')
-        .doc(uIdBook )
+        .doc(uIdBook)
         .collection('Services Booking')
         .add(servicesMap)
         .then((value) {
@@ -348,7 +354,6 @@ class AppCubit extends Cubit<AppState> {
         uIdSalon: uIdSalon,
         uIdServices: uIdServices,
         uIdUser: uIdUser);
-
     FirebaseFirestore.instance
         .collection('Booking')
         .doc(uIdBook)
@@ -357,6 +362,72 @@ class AppCubit extends Cubit<AppState> {
       emit(UpdateBookingSuccessState());
     }).catchError((error) {
       emit(UpdateBookingErrorState());
+    });
+  }
+
+  //chat
+
+
+
+
+
+
+
+  void sendMessage({
+    //required String senderId,
+    required String receiveId,
+    required String dateTime,
+    required String text,
+  }) {
+    MessageModel messageModel = MessageModel(
+      dateTime: dateTime,
+      receiverId: receiveId,
+      senderId: uId,
+      text: text,
+    );
+
+    FirebaseFirestore.instance
+        .collection('chat')
+        .doc(model.uId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+    FirebaseFirestore.instance
+        .collection('chat')
+        .doc(receiveId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+  }
+
+  List<MessageModel> messages = [];
+
+  void getMessage({required String receiveId}) {
+    FirebaseFirestore.instance
+        .collection('chat')
+        .doc(receiveId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+
+      event.docs.forEach((element) {
+        messages.add(
+          MessageModel.fromJson(
+            element.data(),
+          ),
+        );
+      });
+      emit(GetMessageSuccessState());
     });
   }
 }
