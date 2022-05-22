@@ -70,8 +70,22 @@ class UpdateBookingErrorState extends AppState {}
 
 //chat
 
+// class AddDataUserSendChatSuccessState extends AppState {}
+//
+// class AddDataUserSendChatErrorState extends AppState {}
+//
+// class AddDataUserReceiveChatSuccessState extends AppState {}
+//
+// class AddDataUserReceiveChatErrorState extends AppState {}
+
 class SendMessageSuccessState extends AppState {}
 
 class SendMessageErrorState extends AppState {}
 
 class GetMessageSuccessState extends AppState {}
+
+class AppCubitGetUserChatLoadingState extends AppState {}
+
+class AppCubitGetUserChatSuccessState extends AppState {}
+
+class AppCubitGetUserChatErrorState extends AppState {}

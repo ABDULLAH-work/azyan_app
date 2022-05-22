@@ -142,7 +142,10 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                         onPressed: () {
                           PushToNextScreen(context,
                               ChatDetailsScreen(addSalonModel: widget.model,)
+
                           );
+                         //  AppCubit.get(context).addChatUserSend(name: AppCubit.get(context).model.name.toString(), image: AppCubit.get(context).model.image.toString());
+                         // AppCubit.get(context).addChatUserReceive(name: widget.model.name!, image:widget.model.image! , receiveId: widget.model.uId!);
                         },
                         text: 'Chat',
                         Colortext: Colors.white,

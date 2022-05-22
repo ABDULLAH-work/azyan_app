@@ -3,6 +3,8 @@ class MessageModel {
   String? receiverId;
   String? dateTime;
   String? text;
+  String? name;
+  String? image;
 
 
   MessageModel({
@@ -10,6 +12,8 @@ class MessageModel {
     this.receiverId,
     this.dateTime,
     this.text,
+    this.image,
+    this.name
 
   });
 
@@ -18,6 +22,8 @@ class MessageModel {
     receiverId = json['receiverId'];
     dateTime = json['dateTime'];
     text = json['text'];
+    name = json['name'];
+    image = json['image'];
 
   }
 
@@ -27,6 +33,8 @@ class MessageModel {
       'receiverId': receiverId,
       'dateTime': dateTime,
       'text': text,
+      'name': name,
+      'image': image,
     };
   }
 }

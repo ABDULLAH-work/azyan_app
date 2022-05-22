@@ -4,6 +4,7 @@ import 'package:azyan/constance/constants.dart';
 import 'package:azyan/contol_panel/salon_dashboard/salon_dashboard_screen.dart';
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/models/book_model.dart';
+import 'package:azyan/models/chat_user_model.dart';
 import 'package:azyan/models/message_model.dart';
 import 'package:azyan/models/services_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
@@ -15,6 +16,7 @@ import 'package:azyan/remote/cach_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -96,10 +98,7 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
-
   // booking
-
-
 
   void changTimeBookingState() {
     emit(ChangTimeBookingState());
@@ -367,25 +366,61 @@ class AppCubit extends Cubit<AppState> {
 
   //chat
 
-
-
-
-
-
+  // void addChatUserSend({
+  //   required String name,
+  //   required String image,
+  // }) {
+  //   ChatUserModel chatUserModel = ChatUserModel(
+  //     image: image,
+  //     name: name,
+  //   );
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('chat')
+  //       .doc(model.uId)
+  //       .set(chatUserModel.toMap())
+  //       .then((value) {
+  //     emit(AddDataUserSendChatSuccessState());
+  //   }).catchError((error) {
+  //     emit(AddDataUserSendChatErrorState());
+  //   });
+  // }
+  //
+  // void addChatUserReceive({
+  //   required String name,
+  //   required String image,
+  //   required String receiveId,
+  // }) {
+  //   ChatUserModel chatUserModel = ChatUserModel(
+  //     image: image,
+  //     name: name,
+  //   );
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('chat')
+  //       .doc(receiveId)
+  //       .set(chatUserModel.toMap())
+  //       .then((value) {
+  //     emit(AddDataUserReceiveChatSuccessState());
+  //   }).catchError((error) {
+  //     emit(AddDataUserReceiveChatErrorState());
+  //   });
+  // }
 
   void sendMessage({
-    //required String senderId,
     required String receiveId,
     required String dateTime,
     required String text,
+    required String name,
+    required String image,
   }) {
     MessageModel messageModel = MessageModel(
-      dateTime: dateTime,
-      receiverId: receiveId,
-      senderId: uId,
-      text: text,
-    );
-
+        dateTime: dateTime,
+        receiverId: receiveId,
+        senderId: uId,
+        text: text,
+        image: image,
+        name: name);
     FirebaseFirestore.instance
         .collection('chat')
         .doc(model.uId)
@@ -429,5 +464,46 @@ class AppCubit extends Cubit<AppState> {
       });
       emit(GetMessageSuccessState());
     });
+  }
+
+  List<MessageModel> chatUser = [];
+  List<String> chatUserName = [];
+  List<String> chatUserImage = [];
+  List<String> chatUserUid = [];
+
+  void getUserChat() {
+    emit(AppCubitGetUserChatLoadingState());
+    FirebaseFirestore.instance
+        .collection('chat')
+        .doc(uId)
+        .collection('messages')
+        .where('senderId', isEqualTo: uId)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        chatUser.add(
+          MessageModel.fromJson(
+            element.data(),
+          ),
+        );
+      });
+      chatUser.forEach((element) {
+        chatUserName.add(element.name!);
+
+      });
+      chatUser.forEach((element) {
+        chatUserImage.add(element.image!);
+      });
+      chatUser.forEach((element) {
+        chatUserUid.add(element.receiverId!);
+      });
+      print(chatUserUid.toSet().toList().length);
+      emit(AppCubitGetUserChatSuccessState());
+    }).catchError(
+      (error) {
+        print(error.toString());
+         emit(AppCubitGetUserChatErrorState());
+      },
+    );
   }
 }

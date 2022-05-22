@@ -7,15 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatDetailsScreen extends StatelessWidget {
   AddSalonModel? addSalonModel;
+  String? name;
+  String? image;
+  String? uId;
 
-  ChatDetailsScreen({this.addSalonModel});
+  ChatDetailsScreen({this.addSalonModel,this.name,this.image,this.uId});
 
   var messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      AppCubit.get(context).getMessage(receiveId:addSalonModel!.uId.toString());
+      AppCubit.get(context).getMessage(receiveId:addSalonModel?.uId ?? uId!);
 
       return BlocConsumer<AppCubit, AppState>(
         builder: (context, state) {
@@ -31,13 +34,13 @@ class ChatDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20.0,
-                    backgroundImage: NetworkImage('${addSalonModel!.image}'),
+                    backgroundImage: NetworkImage('${addSalonModel?.image??image}'),
                   ),
                   SizedBox(
                     width: 15.0,
                   ),
                   Text(
-                    addSalonModel!.name.toString(),
+                    addSalonModel?.name??name!,
                     style: TextStyle(color: Colors.black),
                   ),
                 ],
@@ -95,10 +98,15 @@ class ChatDetailsScreen extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     AppCubit.get(context).sendMessage(
-                                        receiveId: addSalonModel!.uId!,
+                                      image: addSalonModel?.image??image!  ,
+                                        name: addSalonModel?.name??name!,
+                                        receiveId: addSalonModel?.uId??uId!,
                                         dateTime: DateTime.now().toString(),
-                                        text: messageController.text);
+                                        text: messageController.text
+
+                                    );
                                     messageController.clear();
+
                                   },
                                   minWidth: 1.0,
                                 ),
