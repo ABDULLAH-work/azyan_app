@@ -294,7 +294,8 @@ class ControlPanelCubit extends Cubit<ControlPanelStates> {
           body: jsonEncode(<String, dynamic>{
             'notification': <String, dynamic>{
               'title': title,
-              'body': 'wlc to app azyan'
+              'body': 'wlc to app azyan',
+              'sound':'default'
             },
             'priority': 'high',
             'data': data,
@@ -304,7 +305,7 @@ class ControlPanelCubit extends Cubit<ControlPanelStates> {
 
 
       if (response.statusCode == 200) {
-        print("Yeh notificatin is sended");
+        print("Yeh notification is send");
       } else {
         print("Error");
       }
