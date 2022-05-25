@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/component.dart';
 import 'package:azyan/constance/constants.dart';
 import 'package:azyan/contol_panel/salon_dashboard/salon_dashboard_screen.dart';
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/models/book_model.dart';
-import 'package:azyan/models/chat_user_model.dart';
 import 'package:azyan/models/message_model.dart';
 import 'package:azyan/models/services_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
@@ -15,10 +16,10 @@ import 'package:azyan/modules/my_account_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'states.dart';
 
@@ -34,13 +35,18 @@ class AppCubit extends Cubit<AppState> {
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       model = UserModel.fromJson(value.data()!);
       emit(AppCubitGetUserSuccessState(model));
+      cachHelper.Savedataa(key: 'state', value: model.state)
+          .then((value) {
+        stateUser = cachHelper.getData('state');
+        print('stateUser:$stateUser');
+      });
       if (state is AppCubitGetUserSuccessState) {
         model.state == 'user'
             ? NavegatandFinish(context, AzyanLayout())
             : NavegatandFinish(context, SalonDashboardScreen());
       }
     }).catchError(
-      (error) {
+          (error) {
         print(
           error.toString(),
         );
@@ -91,7 +97,7 @@ class AppCubit extends Cubit<AppState> {
       });
       emit(AppCubitGetSalonSuccessState());
     }).catchError(
-      (error) {
+          (error) {
         print(error.toString());
         emit(AppCubitGetSalonErrorState());
       },
@@ -153,7 +159,7 @@ class AppCubit extends Cubit<AppState> {
 
       emit(AppCubitGetSalonServicesHairDataSuccessState());
     }).catchError(
-      (error) {
+          (error) {
         print(error.toString());
 
         emit(AppCubitGetSalonServicesHairDataErrorState());
@@ -195,7 +201,7 @@ class AppCubit extends Cubit<AppState> {
 
       emit(AppCubitGetSalonServicesFaceDataSuccessState());
     }).catchError(
-      (error) {
+          (error) {
         print(error.toString());
 
         emit(AppCubitGetSalonServicesFaceDataErrorState());
@@ -234,7 +240,7 @@ class AppCubit extends Cubit<AppState> {
 
       emit(AppCubitGetSalonServicesBodyDataSuccessState());
     }).catchError(
-      (error) {
+          (error) {
         print(error.toString());
 
         emit(AppCubitGetSalonServicesBodyDataErrorState());
@@ -289,7 +295,7 @@ class AppCubit extends Cubit<AppState> {
         .collection('Booking')
         .add(bookModel.toMap())
         .then(
-      (value) {
+          (value) {
         addBookSalonServices(
             uIdUser: uIdUser,
             uIdSalon: uIdSalon,
@@ -301,7 +307,7 @@ class AppCubit extends Cubit<AppState> {
         emit(CreateBookingSuccessState());
       },
     ).catchError(
-      (error) {
+          (error) {
         emit(CreateBookingErrorState());
       },
     );
@@ -333,7 +339,7 @@ class AppCubit extends Cubit<AppState> {
         uIdServices: value.id,
       );
     }).catchError(
-      (error) {},
+          (error) {},
     );
   }
 
@@ -366,61 +372,27 @@ class AppCubit extends Cubit<AppState> {
 
   //chat
 
-  // void addChatUserSend({
-  //   required String name,
-  //   required String image,
-  // }) {
-  //   ChatUserModel chatUserModel = ChatUserModel(
-  //     image: image,
-  //     name: name,
-  //   );
-  //
-  //   FirebaseFirestore.instance
-  //       .collection('chat')
-  //       .doc(model.uId)
-  //       .set(chatUserModel.toMap())
-  //       .then((value) {
-  //     emit(AddDataUserSendChatSuccessState());
-  //   }).catchError((error) {
-  //     emit(AddDataUserSendChatErrorState());
-  //   });
-  // }
-  //
-  // void addChatUserReceive({
-  //   required String name,
-  //   required String image,
-  //   required String receiveId,
-  // }) {
-  //   ChatUserModel chatUserModel = ChatUserModel(
-  //     image: image,
-  //     name: name,
-  //   );
-  //
-  //   FirebaseFirestore.instance
-  //       .collection('chat')
-  //       .doc(receiveId)
-  //       .set(chatUserModel.toMap())
-  //       .then((value) {
-  //     emit(AddDataUserReceiveChatSuccessState());
-  //   }).catchError((error) {
-  //     emit(AddDataUserReceiveChatErrorState());
-  //   });
-  // }
-
   void sendMessage({
     required String receiveId,
     required String dateTime,
     required String text,
     required String name,
     required String image,
+    required String tokenReceiver,
   }) {
     MessageModel messageModel = MessageModel(
-        dateTime: dateTime,
-        receiverId: receiveId,
-        senderId: uId,
-        text: text,
-        image: image,
-        name: name);
+      dateTime: dateTime,
+      receiverId: receiveId,
+      senderId: uId,
+      text: text,
+      image: image,
+      name: name,
+      imageSender: model.image,
+      nameSender: model.name,
+      roomId: uId.toString() + receiveId,
+      receiverToken: tokenReceiver,
+      senderToken: token
+    );
     FirebaseFirestore.instance
         .collection('chat')
         .doc(model.uId)
@@ -438,9 +410,11 @@ class AppCubit extends Cubit<AppState> {
         .add(messageModel.toMap())
         .then((value) {
       emit(SendMessageSuccessState());
+      sendNotification(text,tokenReceiver);
     }).catchError((error) {
       emit(SendMessageErrorState());
     });
+
   }
 
   List<MessageModel> messages = [];
@@ -451,6 +425,7 @@ class AppCubit extends Cubit<AppState> {
         .doc(receiveId)
         .collection('messages')
         .orderBy('dateTime')
+        .where('roomId', isEqualTo: uId.toString() + receiveId.toString())
         .snapshots()
         .listen((event) {
       messages = [];
@@ -467,8 +442,11 @@ class AppCubit extends Cubit<AppState> {
   }
 
   List<MessageModel> chatUser = [];
+
   List<String> chatUserName = [];
+
   List<String> chatUserImage = [];
+
   List<String> chatUserUid = [];
 
   void getUserChat() {
@@ -489,7 +467,6 @@ class AppCubit extends Cubit<AppState> {
       });
       chatUser.forEach((element) {
         chatUserName.add(element.name!);
-
       });
       chatUser.forEach((element) {
         chatUserImage.add(element.image!);
@@ -497,13 +474,54 @@ class AppCubit extends Cubit<AppState> {
       chatUser.forEach((element) {
         chatUserUid.add(element.receiverId!);
       });
-      print(chatUserUid.toSet().toList().length);
+
       emit(AppCubitGetUserChatSuccessState());
     }).catchError(
-      (error) {
+          (error) {
         print(error.toString());
-         emit(AppCubitGetUserChatErrorState());
+        emit(AppCubitGetUserChatErrorState());
       },
     );
+  }
+
+
+   //notification
+
+
+  sendNotification(String title, String token) async {
+    final data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+      'message': title,
+    };
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'key=AAAAlS8dNQc:APA91bELaFaTNochPq8bKJdDAPInxyXVYJQ27PH1pbgXtna_mu6dpWtHPhKO3Z3bmjFvrU9lUh4ATBYaLAhYGxjlMyM2U708QAT63-TreuTAVxxstspsE5v-DW2xJlbdy5zrlAEpA-Is'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'notification': <String, dynamic>{
+              'title': title,
+              'body': 'You are followed by someone'
+            },
+            'priority': 'high',
+            'data': data,
+            'to': '$token'
+          })
+      );
+
+
+      if (response.statusCode == 200) {
+        print("Yeh notificatin is sended");
+      } else {
+        print("Error");
+      }
+    } catch (e) {
+
+    }
   }
 }

@@ -10,6 +10,7 @@ class ChatDetailsScreen extends StatelessWidget {
   String? name;
   String? image;
   String? uId;
+  String? token;
 
   ChatDetailsScreen({this.addSalonModel,this.name,this.image,this.uId});
 
@@ -98,11 +99,12 @@ class ChatDetailsScreen extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     AppCubit.get(context).sendMessage(
-                                      image: addSalonModel?.image??image!  ,
+                                      image: addSalonModel?.image??image!,
                                         name: addSalonModel?.name??name!,
                                         receiveId: addSalonModel?.uId??uId!,
                                         dateTime: DateTime.now().toString(),
-                                        text: messageController.text
+                                        text: messageController.text,
+                                      tokenReceiver: addSalonModel?.token??token!,
 
                                     );
                                     messageController.clear();

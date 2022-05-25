@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:azyan/constance/constants.dart';
 import 'package:azyan/models/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -74,6 +75,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
           status: status,
           image: image,
           state: state,
+
         );
       },
     ).catchError(
@@ -103,6 +105,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       status: status,
       image: image,
       state: state,
+      token: token
     );
     FirebaseFirestore.instance
         .collection('users')

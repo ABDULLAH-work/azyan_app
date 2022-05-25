@@ -31,7 +31,6 @@ class LoginScreen extends StatelessWidget {
             uId = cachHelper.getData('uId');
             print(uId);
             AppCubit.get(context).getUserData(context);
-
           });
         }
       },

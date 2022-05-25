@@ -296,7 +296,8 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
         ratting: ratting,
         uIdBody: uIdBody,
         uIdFace: uIdFace,
-        uIdHair: uIdHair);
+        uIdHair: uIdHair,
+        token: token);
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
@@ -325,25 +326,8 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
           uIdBody: uIdBody,
           uIdFace: uIdFace,
         );
-        addSalonServicesFace(faceMap: checkboxResultFace, uId: uId,
-          name: name,
-          email: email,
-          password: password,
-          phone: phone,
-          image: image,
-          state: state,
-          body: body,
-          face: face,
-          hair: hair,
-          description: description,
-          location: location,
-          stateWork: stateWork,
-          hoursEnd: hoursEnd,
-          hoursStart: hoursStart,
-          openOrClose: openOrClose,
-          ratting: ratting,
-          );
-        addSalonServicesBody(bodyMap: checkboxResultBody,
+        addSalonServicesFace(
+          faceMap: checkboxResultFace,
           uId: uId,
           name: name,
           email: email,
@@ -361,7 +345,27 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
           hoursStart: hoursStart,
           openOrClose: openOrClose,
           ratting: ratting,
-          );
+        );
+        addSalonServicesBody(
+          bodyMap: checkboxResultBody,
+          uId: uId,
+          name: name,
+          email: email,
+          password: password,
+          phone: phone,
+          image: image,
+          state: state,
+          body: body,
+          face: face,
+          hair: hair,
+          description: description,
+          location: location,
+          stateWork: stateWork,
+          hoursEnd: hoursEnd,
+          hoursStart: hoursStart,
+          openOrClose: openOrClose,
+          ratting: ratting,
+        );
 
         emit(RegisterCreateSalonSuccessState(uId));
       },
@@ -449,7 +453,6 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
     required int hoursStart,
     required int hoursEnd,
     required double ratting,
-
   }) {
     FirebaseFirestore.instance
         .collection('users')
@@ -586,7 +589,8 @@ class AddSalonCubit extends Cubit<AddSalonStates> {
         ratting: ratting,
         uIdBody: uIdBody,
         uIdFace: uIdFace,
-        uIdHair: uIdHair);
+        uIdHair: uIdHair,
+        token: token);
 
     FirebaseFirestore.instance
         .collection('users')

@@ -7,6 +7,7 @@ class UserModel {
   String? status;
   String? image;
   String? state;
+  String? token;
 
   UserModel(
       {this.uId,
@@ -16,7 +17,8 @@ class UserModel {
       this.location,
       this.status,
       this.image,
-      this.state});
+      this.state,
+      this.token});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -27,6 +29,8 @@ class UserModel {
     status = json['status'];
     image = json['image'];
     state = json['state'];
+    token = json['token'];
+
   }
 
   Map<String, dynamic> toMap() {
@@ -39,6 +43,7 @@ class UserModel {
       'status': status,
       'image': image,
       'state': state,
+      'token': token,
     };
   }
 }

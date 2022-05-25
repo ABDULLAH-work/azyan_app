@@ -19,6 +19,7 @@ class AddSalonModel {
   int? hoursStart;
   int? hoursEnd;
   double? ratting;
+  String? token;
 
   AddSalonModel({
     this.uId,
@@ -40,7 +41,8 @@ class AddSalonModel {
     this.hoursStart,
     this.uIdHair,
     this.uIdFace,
-    this.uIdBody
+    this.uIdBody,
+    this.token
   });
 
   AddSalonModel.fromJson(Map<String, dynamic> json) {
@@ -63,6 +65,7 @@ class AddSalonModel {
     uIdHair = json['uIdHair'];
     uIdFace = json['uIdFace'];
     uIdBody = json['uIdBody'];
+    token = json['token'];
 
   }
 
@@ -88,6 +91,7 @@ class AddSalonModel {
       'uIdHair': uIdHair,
       'uIdFace': uIdFace,
       'uIdBody': uIdBody,
+      'token': token,
     };
   }
 }

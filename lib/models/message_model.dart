@@ -5,6 +5,11 @@ class MessageModel {
   String? text;
   String? name;
   String? image;
+  String? imageSender;
+  String? nameSender;
+  String? roomId;
+  String? receiverToken;
+  String? senderToken;
 
 
   MessageModel({
@@ -13,7 +18,12 @@ class MessageModel {
     this.dateTime,
     this.text,
     this.image,
-    this.name
+    this.name,
+    this.nameSender,
+    this.imageSender,
+    this.roomId,
+    this.receiverToken,
+    this.senderToken
 
   });
 
@@ -24,6 +34,12 @@ class MessageModel {
     text = json['text'];
     name = json['name'];
     image = json['image'];
+    nameSender = json['nameSender'];
+    imageSender = json['imageSender'];
+    roomId = json['roomId'];
+    receiverToken = json['receiverToken'];
+    senderToken = json['senderToken'];
+
 
   }
 
@@ -35,6 +51,12 @@ class MessageModel {
       'text': text,
       'name': name,
       'image': image,
+      'nameSender': nameSender,
+      'imageSender': imageSender,
+      'roomId': roomId,
+      'receiverToken': receiverToken,
+      'senderToken': senderToken,
+
     };
   }
 }
