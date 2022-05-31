@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:azyan/models/add_salon_model.dart';
 import 'package:azyan/models/message_model.dart';
 import 'package:azyan/shared/cubit_app/cubit.dart';
@@ -12,19 +14,24 @@ class ChatDetailsScreen extends StatelessWidget {
   String? uId;
   String? token;
 
-  ChatDetailsScreen({this.addSalonModel,this.name,this.image,this.uId});
+  ChatDetailsScreen({this.addSalonModel, this.name, this.image, this.uId});
 
   var messageController = TextEditingController();
+  final ScrollController controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    controllerScroll.animateTo(
+      controllerScroll.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
     return Builder(builder: (context) {
-      AppCubit.get(context).getMessage(receiveId:addSalonModel?.uId ?? uId!);
-
+      AppCubit.get(context).getMessage(receiveId: addSalonModel?.uId ?? uId!);
       return BlocConsumer<AppCubit, AppState>(
         builder: (context, state) {
           return Scaffold(
-
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0.0,
@@ -35,31 +42,57 @@ class ChatDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20.0,
-                    backgroundImage: NetworkImage('${addSalonModel?.image??image}'),
+                    backgroundImage:
+                        NetworkImage('${addSalonModel?.image ?? image}'),
                   ),
                   SizedBox(
                     width: 15.0,
                   ),
                   Text(
-                    addSalonModel?.name??name!,
+                    addSalonModel?.name ?? name!,
                     style: TextStyle(color: Colors.black),
                   ),
                 ],
               ),
             ),
-            body:  Padding(
+            body: Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1548777123-e216912df7d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+                  child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                         Expanded(
                           child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
+                              controller: controllerScroll,
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
+                                if (AppCubit.get(context).messages.length ==
+                                    index) {
+                                  return Container(
+                                    height: 28.0,
+                                  );
+                                }
                                 var message =
                                     AppCubit.get(context).messages[index];
 
                                 if (AppCubit.get(context).model.uId ==
-                                    message.senderId) return buildMyMessage(message);
+                                    message.senderId)
+                                  return buildMyMessage(message);
 
                                 return buildMessage(message);
                               },
@@ -68,7 +101,11 @@ class ChatDetailsScreen extends StatelessWidget {
                                   height: 15.0,
                                 );
                               },
-                              itemCount: AppCubit.get(context).messages.length),
+                              itemCount:
+                                  AppCubit.get(context).messages.length + 1),
+                        ),
+                        SizedBox(
+                          height: 10.0,
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -82,7 +119,6 @@ class ChatDetailsScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: TextField(
-
                                   controller: messageController,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -99,26 +135,33 @@ class ChatDetailsScreen extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     AppCubit.get(context).sendMessage(
-                                      image: addSalonModel?.image??image!,
-                                        name: addSalonModel?.name??name!,
-                                        receiveId: addSalonModel?.uId??uId!,
-                                        dateTime: DateTime.now().toString(),
-                                        text: messageController.text,
-                                      tokenReceiver: addSalonModel?.token??token!,
-
+                                      image: addSalonModel?.image ?? image!,
+                                      name: addSalonModel?.name ?? name!,
+                                      receiveId: addSalonModel?.uId ?? uId!,
+                                      dateTime: DateTime.now().toString(),
+                                      text: messageController.text,
+                                      tokenReceiver:
+                                          addSalonModel?.token ?? token!,
                                     );
                                     messageController.clear();
-
+                                    controllerScroll.animateTo(
+                                      controllerScroll.position.maxScrollExtent,
+                                      duration: Duration(milliseconds: 500),
+                                      curve: Curves.easeOut,
+                                    );
                                   },
                                   minWidth: 1.0,
                                 ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
+                ),
+              ],
+            ),
           );
         },
         listener: (context, state) {},
@@ -145,14 +188,17 @@ class ChatDetailsScreen extends StatelessWidget {
         alignment: AlignmentDirectional.centerEnd,
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.red.withOpacity(.2),
+              color: Colors.red.withOpacity(.8),
               borderRadius: BorderRadiusDirectional.only(
                 bottomStart: Radius.circular(10.0),
                 topEnd: Radius.circular(10.0),
                 topStart: Radius.circular(10.0),
               )),
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-          child: Text(messageModel.text.toString()),
+          child: Text(
+            messageModel.text.toString(),
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       );
 }

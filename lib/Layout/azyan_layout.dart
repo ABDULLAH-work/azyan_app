@@ -49,7 +49,7 @@ class AzyanLayout extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.notifications),
-                    label: 'home',
+                    label: 'Notification',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.chat),

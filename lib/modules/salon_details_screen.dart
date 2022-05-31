@@ -275,6 +275,7 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                         onPressed: () {
                           Navigator.of(context).push(
                             showPicker(
+                              blurredBackground: true,
                               context: context,
                               value: TimeOfDay(
                                   hour: widget.model.hoursStart!, minute: 10),

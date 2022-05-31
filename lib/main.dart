@@ -1,7 +1,7 @@
 import 'package:azyan/Layout/azyan_layout.dart';
 import 'package:azyan/constance/constants.dart';
 import 'package:azyan/contol_panel/salon_dashboard/salon_dashboard_screen.dart';
-import 'package:azyan/modules/on_bording_screen.dart';
+import 'package:azyan/modules/on_bording/on_bording_screen.dart';
 import 'package:azyan/modules/salon_or_services_or_user_screen.dart';
 import 'package:azyan/shared/add_salon_cubit/cubit.dart';
 import 'package:azyan/shared/cotrol_panel_cubit/cubit.dart';

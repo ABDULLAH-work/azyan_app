@@ -118,7 +118,8 @@ class Home extends StatelessWidget {
 
                               height:180.0,
                               child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: cubit.salon.length,
                                   itemBuilder: (context, index) => buildSalon( context,cubit.salon[index]),

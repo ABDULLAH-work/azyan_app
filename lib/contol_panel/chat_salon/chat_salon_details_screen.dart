@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:azyan/models/message_model.dart';
 import 'package:azyan/shared/cotrol_panel_cubit/cubit.dart';
 import 'package:azyan/shared/cotrol_panel_cubit/states.dart';
@@ -10,19 +12,26 @@ class ChatSalonDetailsScreen extends StatelessWidget {
   String? uId;
   String? token;
 
-  ChatSalonDetailsScreen({this.name,this.image,this.uId,this.token});
+  ChatSalonDetailsScreen({this.name, this.image, this.uId, this.token});
 
   var messageController = TextEditingController();
+  final ScrollController controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+
     return Builder(builder: (context) {
       ControlPanelCubit.get(context).getMessage(uId!);
+      controllerScroll.animateTo(
+        controllerScroll
+            .position.maxScrollExtent,
+        duration: Duration(seconds: 500),
+        curve: Curves.easeOut,
+      );
 
       return BlocConsumer<ControlPanelCubit, ControlPanelStates>(
         builder: (context, state) {
           return Scaffold(
-
             backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0.0,
@@ -45,76 +54,104 @@ class ChatSalonDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            body:  Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var message =
-                          ControlPanelCubit.get(context).messages[index];
-
-                          if (uId!=
-                              message.senderId) return buildMyMessage(message);
-
-                          return buildMessage(message);
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(
-                            height: 15.0,
-                          );
-                        },
-                        itemCount: ControlPanelCubit.get(context).messages.length),
+            body: Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1548777123-e216912df7d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(15.0)),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Row(
+                ),
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                              controller: controllerScroll,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var message = ControlPanelCubit.get(context)
+                                    .messages[index];
 
-                            controller: messageController,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'type your message here ...'),
-                          ),
+                                if (uId != message.senderId)
+                                  return buildMyMessage(message);
+
+                                return buildMessage(message);
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 15.0,
+                                );
+                              },
+                              itemCount: ControlPanelCubit.get(context)
+                                  .messages
+                                  .length),
                         ),
                         Container(
-                          height: 50.0,
-                          color: Colors.red[500],
-                          child: MaterialButton(
-                            child: Icon(
-                              Icons.send,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              ControlPanelCubit.get(context).sendMessage(
-                                image:image!  ,
-                                name: name!,
-                                receiveId: uId!,
-                                dateTime: DateTime.now().toString(),
-                                text: messageController.text,
-                                tokenReceiver: token!,
-                              );
-                              messageController.clear();
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey[300]!,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: messageController,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'type your message here ...'),
+                                ),
+                              ),
+                              Container(
+                                height: 50.0,
+                                color: Colors.red[500],
+                                child: MaterialButton(
+                                  child: Icon(
+                                    Icons.send,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    ControlPanelCubit.get(context).sendMessage(
+                                      image: image!,
+                                      name: name!,
+                                      receiveId: uId!,
+                                      dateTime: DateTime.now().toString(),
+                                      text: messageController.text,
+                                      tokenReceiver: token!,
+                                    );
+                                    messageController.clear();
+                                      controllerScroll.animateTo(
+                                        controllerScroll
+                                            .position.maxScrollExtent,
+                                        duration: Duration(seconds: 500),
+                                        curve: Curves.easeOut,
+                                      );
 
-                            },
-                            minWidth: 1.0,
+                                  },
+                                  minWidth: 1.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
+                        )
                       ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           );
         },
@@ -124,32 +161,35 @@ class ChatSalonDetailsScreen extends StatelessWidget {
   }
 
   Widget buildMessage(MessageModel messageModel) => Align(
-    alignment: AlignmentDirectional.centerStart,
-    child: Container(
-      decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadiusDirectional.only(
-            bottomEnd: Radius.circular(10.0),
-            topEnd: Radius.circular(10.0),
-            topStart: Radius.circular(10.0),
-          )),
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Text(messageModel.text.toString()),
-    ),
-  );
+        alignment: AlignmentDirectional.centerStart,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadiusDirectional.only(
+                bottomEnd: Radius.circular(10.0),
+                topEnd: Radius.circular(10.0),
+                topStart: Radius.circular(10.0),
+              )),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: Text(messageModel.text.toString()),
+        ),
+      );
 
   Widget buildMyMessage(MessageModel messageModel) => Align(
-    alignment: AlignmentDirectional.centerEnd,
-    child: Container(
-      decoration: BoxDecoration(
-          color: Colors.red.withOpacity(.2),
-          borderRadius: BorderRadiusDirectional.only(
-            bottomStart: Radius.circular(10.0),
-            topEnd: Radius.circular(10.0),
-            topStart: Radius.circular(10.0),
-          )),
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Text(messageModel.text.toString()),
-    ),
-  );
+        alignment: AlignmentDirectional.centerEnd,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.red.withOpacity(.8),
+              borderRadius: BorderRadiusDirectional.only(
+                bottomStart: Radius.circular(10.0),
+                topEnd: Radius.circular(10.0),
+                topStart: Radius.circular(10.0),
+              )),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: Text(
+            messageModel.text.toString(),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
 }

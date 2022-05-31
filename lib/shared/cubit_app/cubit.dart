@@ -11,8 +11,8 @@ import 'package:azyan/models/services_salon_model.dart';
 import 'package:azyan/models/user_model.dart';
 import 'package:azyan/modules/auth_screen/login_screen.dart';
 import 'package:azyan/modules/chats/chat_screen.dart';
-import 'package:azyan/modules/home_screen.dart';
-import 'package:azyan/modules/my_account_screen.dart';
+import 'package:azyan/modules/home/home_screen.dart';
+import 'package:azyan/modules/account/my_account_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -130,7 +130,6 @@ class AppCubit extends Cubit<AppState> {
         .get()
         .then((value) {
       modelSalonServicesHair = ModelSalonServicesHair.fromJson(value.data()!);
-      print(modelSalonServicesHair.services1);
       if (modelSalonServicesHair.services1 == true) {
         servicesBooking.add('services 1');
       }
@@ -524,4 +523,9 @@ class AppCubit extends Cubit<AppState> {
 
     }
   }
+
+
+
+
+
 }

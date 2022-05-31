@@ -2,8 +2,8 @@ import 'package:azyan/constance/component.dart';
 import 'package:azyan/modules/salon_or_services_or_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../models/on_bordind_model.dart';
-import 'auth_screen/login_screen.dart';
+import '../../models/on_bordind_model.dart';
+import '../auth_screen/login_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 
 List<onbordModel> screens = [
