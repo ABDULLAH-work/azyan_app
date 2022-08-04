@@ -13,6 +13,7 @@ import 'package:azyan/modules/auth_screen/login_screen.dart';
 import 'package:azyan/modules/chats/chat_screen.dart';
 import 'package:azyan/modules/home/home_screen.dart';
 import 'package:azyan/modules/account/my_account_screen.dart';
+import 'package:azyan/modules/notification/notification_screen.dart';
 import 'package:azyan/remote/cach_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -60,7 +61,7 @@ class AppCubit extends Cubit<AppState> {
   int currentIndex = 0;
   List<Widget> screen = [
     Home(),
-    Home(),
+    NotificationScreen(),
     ChatScreen(),
     MyAccount(),
   ];
@@ -282,6 +283,7 @@ class AppCubit extends Cubit<AppState> {
     required String dateBook,
     required String timeBook,
     required String uIdServices,
+    required String nameSalon,
   }) {
     BookModel bookModel = BookModel(
         dateBook: dateBook,
@@ -302,7 +304,9 @@ class AppCubit extends Cubit<AppState> {
             uIdServices: uIdServices,
             timeBook: timeBook,
             dateBook: dateBook,
-            servicesMap: checkboxResultServices);
+            servicesMap: checkboxResultServices,
+
+        );
         emit(CreateBookingSuccessState());
       },
     ).catchError(

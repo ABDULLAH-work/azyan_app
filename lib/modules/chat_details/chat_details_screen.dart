@@ -17,21 +17,21 @@ class ChatDetailsScreen extends StatelessWidget {
   ChatDetailsScreen({this.addSalonModel, this.name, this.image, this.uId});
 
   var messageController = TextEditingController();
-  final ScrollController controllerScroll = ScrollController();
+ // final ScrollController controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    controllerScroll.animateTo(
-      controllerScroll.position.maxScrollExtent,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeOut,
-    );
+    // controllerScroll.animateTo(
+    //  // controllerScroll.position.maxScrollExtent,
+    //   duration: Duration(milliseconds: 500),
+    //   curve: Curves.easeOut,
+    // );
     return Builder(builder: (context) {
       AppCubit.get(context).getMessage(receiveId: addSalonModel?.uId ?? uId!);
       return BlocConsumer<AppCubit, AppState>(
         builder: (context, state) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true ,
             backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0.0,
@@ -77,7 +77,7 @@ class ChatDetailsScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ListView.separated(
-                              controller: controllerScroll,
+                             // controller: controllerScroll,
                               shrinkWrap: true,
                               physics: BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
@@ -144,11 +144,11 @@ class ChatDetailsScreen extends StatelessWidget {
                                           addSalonModel?.token ?? token!,
                                     );
                                     messageController.clear();
-                                    controllerScroll.animateTo(
-                                      controllerScroll.position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.easeOut,
-                                    );
+                                    // controllerScroll.animateTo(
+                                    //   controllerScroll.position.maxScrollExtent,
+                                    //   duration: Duration(milliseconds: 500),
+                                    //   curve: Curves.easeOut,
+                                    // );
                                   },
                                   minWidth: 1.0,
                                 ),
@@ -201,4 +201,4 @@ class ChatDetailsScreen extends StatelessWidget {
           ),
         ),
       );
-}
+} 

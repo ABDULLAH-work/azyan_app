@@ -5,6 +5,7 @@ class BookModel {
   String? timeBook;
   String? uIdBook;
   String? uIdServices;
+  String? nameSalon;
 
   BookModel({
     this.uIdUser,
@@ -13,6 +14,7 @@ class BookModel {
     this.dateBook,
     this.timeBook,
     this.uIdServices,
+    this.nameSalon,
   });
 
   BookModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class BookModel {
     timeBook = json['timeBook'];
     uIdBook = json['uIdBook'];
     uIdServices = json['uIdServices'];
+    nameSalon = json['nameSalon'];
   }
 
   Map<String, dynamic> toMap() {
@@ -32,6 +35,7 @@ class BookModel {
       'timeBook': timeBook,
       'uIdBook': uIdBook,
       'uIdServices': uIdServices,
+      'nameSalon': nameSalon,
     };
   }
 }

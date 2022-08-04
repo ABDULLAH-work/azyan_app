@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-
 import 'chat_details/chat_details_screen.dart';
 
 class SalonDetailsScreen extends StatefulWidget {
@@ -429,7 +428,8 @@ class _SalonDetailsScreenState extends State<SalonDetailsScreen> {
                               uIdBook: 'null',
                               dateBook: bookMonth!,
                               timeBook: '${bookHours.hour}:${bookHours.minute}',
-                              uIdServices: 'null') : print(
+                              uIdServices: 'null',
+                          nameSalon:  widget.model.name! ) : print(
                               'please select month');
                         },
                         widget: Center(
